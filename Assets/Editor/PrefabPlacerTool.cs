@@ -11,8 +11,8 @@ public class PrefabPlacerTool : EditorWindow
     private int selectedPrefabIndex = 0;
     private GameObject previewInstance;
 
-    private const string PROFILE_FOLDER_PATH = "Assets/PrefabProfiles/";
-    private const string PREFAB_PROFILES_KEY = "PrefabPlacerProfiles";
+    private const string PROFILE_FOLDER_PATH = "Assets/PrefabProfiles/"; //where all the profiles / prefabs data will be saved
+    private const string PREFAB_PROFILES_KEY = "PrefabPlacerProfiles"; //editor prefs persistance key
 
     [MenuItem("Tools/Prefab Placer")]
     public static void ShowWindow()
@@ -32,6 +32,7 @@ public class PrefabPlacerTool : EditorWindow
 
         if (prefabProfiles.Count > 0)
         {
+            selectedProfileIndex = Mathf.Clamp(selectedProfileIndex, 0, prefabProfiles.Count - 1);
             int newSelectedIndex = EditorGUILayout.Popup("Select Profile", selectedProfileIndex, prefabProfiles.ToArray());
             if (newSelectedIndex != selectedProfileIndex)
             {
@@ -85,68 +86,104 @@ public class PrefabPlacerTool : EditorWindow
 
         EditorGUILayout.Space();
 
-        if (prefabs.Length > 0)
+        
+        if(prefabProfiles.Count > 0)
         {
-            selectedPrefabIndex = EditorGUILayout.Popup("Select Prefab", selectedPrefabIndex, System.Array.ConvertAll(prefabs, prefab => prefab.name));
-        }
-        else
-        {
-            EditorGUILayout.LabelField("No prefabs found.");
-        }
-
-        if (GUILayout.Button("Add Prefab to Profile"))
-        {
-            string prefabPath = EditorUtility.OpenFilePanel("Select Prefab", Application.dataPath, "prefab");
-            if (!string.IsNullOrEmpty(prefabPath))
+            if (prefabs.Length == 0 || prefabs == null)
             {
-                string destinationPath = Path.Combine(PROFILE_FOLDER_PATH, prefabProfiles[selectedProfileIndex], Path.GetFileName(prefabPath));
-                destinationPath = destinationPath.Replace(Application.dataPath, "Assets"); // Convert to relative path
-
-                File.Copy(prefabPath, destinationPath, true);
-                AssetDatabase.ImportAsset(destinationPath); // Ensure Unity recognizes the new prefab
-                LoadPrefabs(); // Refresh the prefab list
-                AssetDatabase.Refresh();
+                EditorGUILayout.LabelField("No prefabs found.");
             }
-        }
-
-        if (GUILayout.Button("Delete Prefab from Profile"))
-        {
-            if (prefabs.Length > 0 && selectedPrefabIndex >= 0 && selectedPrefabIndex < prefabs.Length)
+            else
             {
-                string prefabPath = AssetDatabase.GetAssetPath(prefabs[selectedPrefabIndex]);
-                if (!string.IsNullOrEmpty(prefabPath) && File.Exists(prefabPath))
+                selectedPrefabIndex = EditorGUILayout.Popup("Select Prefab", selectedPrefabIndex, System.Array.ConvertAll(prefabs, prefab => prefab.name));
+            }
+
+            if (GUILayout.Button("Add Prefab to Profile"))
+            {
+                string prefabPath = EditorUtility.OpenFilePanel("Select Prefab", Application.dataPath, "prefab");
+                if (!string.IsNullOrEmpty(prefabPath))
                 {
-                    if (EditorUtility.DisplayDialog("Confirm Deletion",
-                    $"Are you sure you want to delete the prefab \"{Path.GetFileName(prefabPath)}\"?",
-                    "Delete", "Cancel"))
+                    string relativePath = "Assets" + prefabPath.Replace(Application.dataPath, "").Replace("\\", "/");
+
+                    //ensure the profile directory exists
+                    string profilePath = Path.Combine(PROFILE_FOLDER_PATH, prefabProfiles[selectedProfileIndex]);
+                    if (!Directory.Exists(profilePath))
                     {
-                        File.Delete(prefabPath);
-                        File.Delete(prefabPath + ".meta"); // Delete the meta file
-                        AssetDatabase.Refresh();
-                        LoadPrefabs(); // Refresh the list after deletion
+                        Directory.CreateDirectory(profilePath);
+                    }
+
+                    //save reference to a text file
+                    string profileFilePath = Path.Combine(profilePath, "prefabs.txt");
+                    File.AppendAllLines(profileFilePath, new[] { relativePath });
+
+                    LoadPrefabs(); //refresh the prefab list
+                    AssetDatabase.Refresh();
+                }
+            }
+
+            if (GUILayout.Button("Delete Prefab from Selected Profile"))
+            {
+                if (prefabs.Length > 0 && selectedPrefabIndex >= 0 && selectedPrefabIndex < prefabs.Length)
+                {
+                    string prefabPath = AssetDatabase.GetAssetPath(prefabs[selectedPrefabIndex]);
+                    if (!string.IsNullOrEmpty(prefabPath))
+                    {
+                        if (EditorUtility.DisplayDialog("Confirm Deletion",
+                            $"Are you sure you want to remove the prefab \"{Path.GetFileName(prefabPath)}\" from this profile?",
+                            "Remove", "Cancel"))
+                        {
+                            string profilePath = Path.Combine(PROFILE_FOLDER_PATH, prefabProfiles[selectedProfileIndex]);
+                            string profileFilePath = Path.Combine(profilePath, "prefabs.txt");
+
+                            if (File.Exists(profileFilePath))
+                            {
+                                var lines = new List<string>(File.ReadAllLines(profileFilePath));
+                                lines.Remove(prefabPath);
+                                File.WriteAllLines(profileFilePath, lines);
+                            }
+
+                            LoadPrefabs(); // Refresh the list after deletion
+                            AssetDatabase.Refresh();
+                        }
                     }
                 }
             }
-        }
 
-        if (GUILayout.Button("Place Prefab in Scene"))
-        {
-            StartPlacingPrefab();
+            if (GUILayout.Button("Place Prefab in Scene"))
+            {
+                StartPlacingPrefab();
+            }
         }
+        
+
     }
 
     private void LoadPrefabs()
     {
         if (prefabProfiles.Count == 0) return;
-        string selectedProfilePath = Path.Combine(PROFILE_FOLDER_PATH, prefabProfiles[selectedProfileIndex]);
-        string[] guids = AssetDatabase.FindAssets("t:Prefab", new[] { selectedProfilePath });
 
-        prefabs = new GameObject[guids.Length];
-        for (int i = 0; i < guids.Length; i++)
+        string profilePath = Path.Combine(PROFILE_FOLDER_PATH, prefabProfiles[selectedProfileIndex]);
+        string profileFilePath = Path.Combine(profilePath, "prefabs.txt");
+
+        if (!File.Exists(profileFilePath)) //if there are no prefabs initialize the prefabs array to avoid errors
         {
-            string path = AssetDatabase.GUIDToAssetPath(guids[i]);
-            prefabs[i] = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            prefabs = new GameObject[0];
+            return;
         }
+
+        string[] prefabPaths = File.ReadAllLines(profileFilePath);
+        List<GameObject> loadedPrefabs = new List<GameObject>();
+
+        foreach (string path in prefabPaths)
+        {
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            if (prefab != null)
+            {
+                loadedPrefabs.Add(prefab);
+            }
+        }
+
+        prefabs = loadedPrefabs.ToArray();
     }
 
     private void SavePrefabProfiles()
@@ -160,6 +197,10 @@ public class PrefabPlacerTool : EditorWindow
         if (!string.IsNullOrEmpty(savedData))
         {
             prefabProfiles = new List<string>(savedData.Split(';'));
+        }
+        else
+        {
+            prefabProfiles = new List<string>(); // Ensure it's initialized
         }
     }
 
@@ -212,14 +253,19 @@ public class PrefabPlacerTool : EditorWindow
 
     private void PlacePrefab()
     {
-        if (previewInstance == null) return;
+        if (prefabs.Length == 0 || selectedPrefabIndex < 0 || selectedPrefabIndex >= prefabs.Length)
+            return;
 
-        GameObject finalInstance = PrefabUtility.InstantiatePrefab(prefabs[selectedPrefabIndex]) as GameObject;
-        finalInstance.transform.position = previewInstance.transform.position;
-        finalInstance.transform.rotation = previewInstance.transform.rotation;
+        GameObject prefab = prefabs[selectedPrefabIndex];
+        GameObject instance = PrefabUtility.InstantiatePrefab(prefab) as GameObject; //intantiate a preview from the saved prefab path
 
-        DestroyImmediate(previewInstance);
-        previewInstance = null;
+        if (previewInstance != null)
+        {
+            instance.transform.position = previewInstance.transform.position;
+            instance.transform.rotation = previewInstance.transform.rotation;
+            DestroyImmediate(previewInstance);
+            previewInstance = null;
+        }
     }
 
     private void CancelPlacingPrefab()
