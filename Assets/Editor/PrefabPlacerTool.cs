@@ -31,6 +31,7 @@ public class PrefabPlacerTool : EditorWindow
         LoadPrefabs();
     }
 
+    //GUI THAT APPEARS WHNE CLICKING ON THE TOOL BUTTON
     private void OnGUI()
     {
         EditorGUILayout.LabelField("Prefab Profiles", EditorStyles.boldLabel);
@@ -272,7 +273,7 @@ public class PrefabPlacerTool : EditorWindow
             Event.current.Use(); //prevent unity from handling this event by other UI elements just for this frame
         }
     }
-
+    //LISTENER + ACTION THAT SHOULD HAPPEN WHEN ON THE SCENEVIEW
     private void OnSceneGUI(SceneView sceneView)
     {
         if (previewInstance == null) return;
