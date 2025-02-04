@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,7 +13,8 @@ public class PrefabPlacerTool : EditorWindow
     private GameObject previewInstance;
     private bool isPlacingPrefab = false;
     private Vector2 scrollPosition; //scrolling the gird
-    
+
+
 
     private const string PROFILE_FOLDER_PATH = "Assets/PrefabProfiles/"; //where all the profiles / prefabs data will be saved
     private const string PREFAB_PROFILES_KEY = "PrefabPlacerProfiles"; //editor prefs persistance key
@@ -64,6 +66,7 @@ public class PrefabPlacerTool : EditorWindow
                 }
             }
         }
+        GUI.color = Color.red;
 
         if (prefabProfiles.Count > 0 && GUILayout.Button("Remove Selected Profile"))//option to delete a profile with a window pop-up asking for confirmation
         {
@@ -87,6 +90,7 @@ public class PrefabPlacerTool : EditorWindow
             }
         }
 
+        GUI.color = Color.white;
         EditorGUILayout.Space();
 
         if (GUILayout.Button("Add Prefab to Profile"))
@@ -114,23 +118,30 @@ public class PrefabPlacerTool : EditorWindow
 
         if (prefabProfiles.Count > 0)
         {
-            if (prefabs.Length > 0)
+            if (prefabs.Length > 0 && prefabs != null)
             {
                 //scrollable area for prefab grid
-                scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, GUILayout.Height(300));
+                scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, GUILayout.Height(200));
 
                 float windowWidth = EditorGUIUtility.currentViewWidth;
                 int colums = Mathf.FloorToInt(windowWidth / 120); //120 equals column width and generate number of columns considering editorwindow widht
                 colums = Mathf.Max(colums, 1);
+                int previousPrefabIndex = selectedPrefabIndex;
                 //prefab selection grid
                 selectedPrefabIndex = GUILayout.SelectionGrid(
                     selectedPrefabIndex,
-                    System.Array.ConvertAll(prefabs, prefab => {
+                    System.Array.ConvertAll(prefabs, prefab =>
+                    {
                         return new GUIContent(AssetPreview.GetAssetPreview(prefab));
-                        }),
+                    }),
                     colums,
                     GUILayout.Height(100 * Mathf.Ceil(prefabs.Length / (float)colums))
                 );
+
+                if (selectedPrefabIndex != previousPrefabIndex)
+                {
+                    StartPlacingPrefab();
+                }
 
                 EditorGUILayout.EndScrollView();
 
@@ -148,7 +159,7 @@ public class PrefabPlacerTool : EditorWindow
             {
                 EditorGUILayout.LabelField("No prefabs found.");
             }
-
+            GUI.color = Color.red;
             if (GUILayout.Button("Delete Prefab from Selected Profile"))
             {
                 if (prefabs.Length > 0 && selectedPrefabIndex >= 0 && selectedPrefabIndex < prefabs.Length)
@@ -176,6 +187,7 @@ public class PrefabPlacerTool : EditorWindow
                     }
                 }
             }
+            GUI.color = Color.white;
 
             if (GUILayout.Button("Place Prefab in Scene"))
             {
@@ -186,14 +198,25 @@ public class PrefabPlacerTool : EditorWindow
 
     private void LoadPrefabs()
     {
-        if (prefabProfiles.Count == 0) return;
+        if (prefabProfiles.Count == 0 || selectedProfileIndex < 0 || selectedProfileIndex >= prefabProfiles.Count)
+        {
+            prefabs = new GameObject[0]; // Prevent null reference errors
+            return;
+        }
 
         string profilePath = Path.Combine(PROFILE_FOLDER_PATH, prefabProfiles[selectedProfileIndex]);
         string profileFilePath = Path.Combine(profilePath, "prefabs.txt");
 
-        if (!File.Exists(profileFilePath)) //if there are no prefabs initialize the prefabs array to avoid errors
+        if (!Directory.Exists(profilePath))
         {
+            Directory.CreateDirectory(profilePath); // Recreate missing profile folder
             prefabs = new GameObject[0];
+            return;
+        }
+
+        if (!File.Exists(profileFilePath))
+        {
+            prefabs = new GameObject[0]; // Avoid errors if the file is missing
             return;
         }
 
@@ -219,15 +242,14 @@ public class PrefabPlacerTool : EditorWindow
 
     private void LoadPrefabProfiles()
     {
-        string savedData = EditorPrefs.GetString(PREFAB_PROFILES_KEY, "");
-        if (!string.IsNullOrEmpty(savedData))
+        if (!Directory.Exists(PROFILE_FOLDER_PATH))
         {
-            prefabProfiles = new List<string>(savedData.Split(';'));
+            Directory.CreateDirectory(PROFILE_FOLDER_PATH); // Ensure the folder exists
+            prefabProfiles = new List<string>(); // Reset the list to avoid errors
+            return;
         }
-        else
-        {
-            prefabProfiles = new List<string>(); // Ensure it's initialized
-        }
+
+        prefabProfiles = Directory.GetDirectories(PROFILE_FOLDER_PATH).Select(Path.GetFileName).ToList();
     }
 
     private void StartPlacingPrefab()
@@ -242,9 +264,9 @@ public class PrefabPlacerTool : EditorWindow
         EditorApplication.update += GlobalKeyListener;
     }
 
-    private void GlobalKeyListener()
+    private void GlobalKeyListener() //doesnt work for now
     {
-        if(isPlacingPrefab && Event.current != null && Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Escape)
+        if (isPlacingPrefab && Event.current != null && Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Escape)
         {
             CancelPlacingPrefab();
             Event.current.Use(); //prevent unity from handling this event by other UI elements just for this frame
@@ -257,9 +279,9 @@ public class PrefabPlacerTool : EditorWindow
 
         Event e = Event.current;
         //HandleUtility.AddDefaultControl(0);  // Prevent Unity selection box from interfering
-        
+
         sceneView.Focus(); //ensure scene view focus
-        
+
 
         Ray ray = HandleUtility.GUIPointToWorldRay(e.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit))
@@ -274,22 +296,22 @@ public class PrefabPlacerTool : EditorWindow
             e.Use();
         }*/
 
-        if (e.type == EventType.MouseDown && e.button == 0) 
+        if (e.type == EventType.MouseDown && e.button == 0)
         {
             PlacePrefab();
             SceneView.duringSceneGui -= OnSceneGUI;
             e.Use();
         }
 
-        /*if (e.type == EventType.KeyDown)
+        if (e.type == EventType.KeyDown)
         {
-            if(e.keyCode == KeyCode.Escape)
+            if (e.keyCode == KeyCode.Escape)
             {
                 CancelPlacingPrefab();
                 SceneView.duringSceneGui -= OnSceneGUI;
                 e.Use();
             }
-        }*/
+        }
 
         sceneView.Repaint();
     }
@@ -329,6 +351,7 @@ public class PrefabPlacerTool : EditorWindow
         EditorApplication.update -= GlobalKeyListener;
     }
 }
+
 
 
 
