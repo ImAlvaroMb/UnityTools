@@ -1,0 +1,5 @@
+Assets/SimpleLowPolyNature/Prefabs/TreeYellow1.prefab
+Assets/SimpleLowPolyNature/Prefabs/Rock3.prefab
+Assets/SimpleLowPolyNature/Prefabs/WoodFence1.prefab
+Assets/SimpleLowPolyNature/Prefabs/TreeYellow3.prefab
+Assets/SimpleLowPolyNature/Prefabs/Cloud1.prefab
