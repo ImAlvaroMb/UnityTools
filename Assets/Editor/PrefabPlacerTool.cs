@@ -201,7 +201,7 @@ public class PrefabPlacerTool : EditorWindow
     {
         if (prefabProfiles.Count == 0 || selectedProfileIndex < 0 || selectedProfileIndex >= prefabProfiles.Count)
         {
-            prefabs = new GameObject[0]; // Prevent null reference errors
+            prefabs = new GameObject[0]; //prevent null reference errors
             return;
         }
 
@@ -210,14 +210,14 @@ public class PrefabPlacerTool : EditorWindow
 
         if (!Directory.Exists(profilePath))
         {
-            Directory.CreateDirectory(profilePath); // Recreate missing profile folder
+            Directory.CreateDirectory(profilePath); //recreate missing profile folder
             prefabs = new GameObject[0];
             return;
         }
 
         if (!File.Exists(profileFilePath))
         {
-            prefabs = new GameObject[0]; // Avoid errors if the file is missing
+            prefabs = new GameObject[0]; //avoid errors if the file is missing
             return;
         }
 
@@ -245,8 +245,8 @@ public class PrefabPlacerTool : EditorWindow
     {
         if (!Directory.Exists(PROFILE_FOLDER_PATH))
         {
-            Directory.CreateDirectory(PROFILE_FOLDER_PATH); // Ensure the folder exists
-            prefabProfiles = new List<string>(); // Reset the list to avoid errors
+            Directory.CreateDirectory(PROFILE_FOLDER_PATH); //ensure the folder exists
+            prefabProfiles = new List<string>(); //reset the list to avoid errors
             return;
         }
 
