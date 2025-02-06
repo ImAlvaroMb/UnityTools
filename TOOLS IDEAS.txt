@@ -1,0 +1,13 @@
+PREFAB PLACER
+- Multiple object placement with a random on how many should appear
+	- Make a toggle for multiple or single placement
+	- On multiple create a visualization of the area
+	- When placing on area make sure all objects are placed properly facing the floor	
+- After placing one auto select last one placed
+
+
+COLLIDER VISUALIZER
+
+MISSING SCRIPT REMOVER
+
+FPS COUNTER
