@@ -156,17 +156,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29d728baac29e36459ef95e667595e27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wheelColliders:
-  - {fileID: 1732413363}
-  - {fileID: 85194378}
-  - {fileID: 1388702763}
-  - {fileID: 1199816751}
-  isTractionWheel: 01010000
-  wheelMeshes: []
-  motorTorque: 1200
-  brakeTorque: 1000
+  wheels:
+  - {fileID: 1732413364}
+  - {fileID: 85194379}
+  - {fileID: 1199816752}
+  - {fileID: 1388702764}
+  maxMotorTorque: 800
+  maxBrakeTorque: 600
   maxSteerAngle: 30
   steeringSmoothness: 8
+  steeringMode: 0
 --- !u!54 &47286857
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -292,6 +291,7 @@ GameObject:
   m_Component:
   - component: {fileID: 85194377}
   - component: {fileID: 85194378}
+  - component: {fileID: 85194379}
   m_Layer: 0
   m_Name: WheelFrontLeft
   m_TagString: Untagged
@@ -353,6 +353,25 @@ WheelCollider:
   m_LayerOverridePriority: 0
   m_Enabled: 1
   m_ProvidesContacts: 0
+--- !u!114 &85194379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 85194376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fc20795bb5963245b305058cb278ba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wheelCollider: {fileID: 85194378}
+  wheelMesh: {fileID: 0}
+  isTractionWheel: 1
+  motorTorque: 1200
+  brakeTorque: 500
+  steerAngle: 30
+  steeringResistance: 0.2
 --- !u!1 &417027686
 GameObject:
   m_ObjectHideFlags: 0
@@ -878,6 +897,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1199816750}
   - component: {fileID: 1199816751}
+  - component: {fileID: 1199816752}
   m_Layer: 0
   m_Name: WheelBackRight
   m_TagString: Untagged
@@ -939,6 +959,25 @@ WheelCollider:
   m_LayerOverridePriority: 0
   m_Enabled: 1
   m_ProvidesContacts: 0
+--- !u!114 &1199816752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199816749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fc20795bb5963245b305058cb278ba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wheelCollider: {fileID: 1199816751}
+  wheelMesh: {fileID: 0}
+  isTractionWheel: 0
+  motorTorque: 1200
+  brakeTorque: 500
+  steerAngle: 30
+  steeringResistance: 0.2
 --- !u!1 &1279798284
 GameObject:
   m_ObjectHideFlags: 0
@@ -1300,21 +1339,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29d728baac29e36459ef95e667595e27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wheelColliders:
-  - {fileID: 2111141837}
-  - {fileID: 1894721721}
-  - {fileID: 1544346219}
-  - {fileID: 1707658061}
-  isTractionWheel: 01010000
-  wheelMeshes:
-  - {fileID: 1279798285}
-  - {fileID: 1398678277}
-  - {fileID: 509522693}
-  - {fileID: 854046532}
-  motorTorque: 500
-  brakeTorque: 1000
+  wheels: []
+  maxMotorTorque: 0
+  maxBrakeTorque: 0
   maxSteerAngle: 30
   steeringSmoothness: 5
+  steeringMode: 0
 --- !u!1 &1388702761
 GameObject:
   m_ObjectHideFlags: 0
@@ -1325,6 +1355,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1388702762}
   - component: {fileID: 1388702763}
+  - component: {fileID: 1388702764}
   m_Layer: 0
   m_Name: WheelBackLeft
   m_TagString: Untagged
@@ -1386,6 +1417,25 @@ WheelCollider:
   m_LayerOverridePriority: 0
   m_Enabled: 1
   m_ProvidesContacts: 0
+--- !u!114 &1388702764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388702761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fc20795bb5963245b305058cb278ba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wheelCollider: {fileID: 1388702763}
+  wheelMesh: {fileID: 0}
+  isTractionWheel: 0
+  motorTorque: 1200
+  brakeTorque: 500
+  steerAngle: 30
+  steeringResistance: 0.2
 --- !u!1 &1398678276
 GameObject:
   m_ObjectHideFlags: 0
@@ -1727,6 +1777,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1732413362}
   - component: {fileID: 1732413363}
+  - component: {fileID: 1732413364}
   m_Layer: 0
   m_Name: WheelFrontRight
   m_TagString: Untagged
@@ -1788,6 +1839,25 @@ WheelCollider:
   m_LayerOverridePriority: 0
   m_Enabled: 1
   m_ProvidesContacts: 0
+--- !u!114 &1732413364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732413361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fc20795bb5963245b305058cb278ba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wheelCollider: {fileID: 1732413363}
+  wheelMesh: {fileID: 0}
+  isTractionWheel: 1
+  motorTorque: 1200
+  brakeTorque: 500
+  steerAngle: 30
+  steeringResistance: 0.2
 --- !u!1 &1785304248
 GameObject:
   m_ObjectHideFlags: 0

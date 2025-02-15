@@ -2,54 +2,59 @@ using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
-    public WheelCollider[] wheelColliders; //front wheels first then back ones
-    public bool[] isTractionWheel;//traction wheels, same order than in the wheelColliderArray
-    public Transform[] wheelMeshes;//child objects from wheels
+    public Wheel[] wheels; //front wheels first then back ones
 
-    [SerializeField] private float motorTorque;//adjust for acceleration
-    [SerializeField] private float brakeTorque;//adjust for braking force
+    [SerializeField] private float maxMotorTorque;//adjust for acceleration
+    [SerializeField] private float maxBrakeTorque;//adjust for braking force
     [SerializeField] private float maxSteerAngle;//adjust for steering snsitivity
     [SerializeField] private float steeringSmoothness;//adjust for steering delay
+
+    [SerializeField] private SteeringMode steeringMode = SteeringMode.FrontWheel;
 
     private float targetSteerAngle;
     private float currentSteerAngle;
 
+    private Rigidbody carRb;
+
+    private void Start()
+    {
+        carRb = GetComponent<Rigidbody>();
+    }
     private void Update()
     {
-       
+        HandleInput();
+        ApplySteering();
     }
 
     private void FixedUpdate()
     {
-        HandleInput();
-        ApplySteering();
-        //UpdateWheelVisuals();
+        ApplySteeringResiatance();
+        UpdateWheelsVisuals();
     }
 
     private void HandleInput()
     {
-        //acceleratio9n
-        float acceleration = Input.GetAxis("Vertical");
-        for (int i = 0; i < wheelColliders.Length; i++)
+
+        //acceleration
+        float acceleration = Input.GetAxis("Vertical") * maxMotorTorque;
+        foreach (var wheel in wheels)
         {
-            if (isTractionWheel[i])
-            {
-                wheelColliders[i].motorTorque = acceleration * motorTorque;
-            }
+            wheel.ApplyMotorTorque(acceleration);
         }
 
         //braking
-        if(Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
         {
-            foreach(var wheel in wheelColliders)
+            foreach (var wheel in wheels)
             {
-                wheel.brakeTorque = brakeTorque;
+                wheel.ApplyBrakeTorque(maxBrakeTorque);
             }
-        } else
+        }
+        else
         {
-            foreach(var wheel in wheelColliders)
+            foreach (var wheel in wheels)
             {
-                wheel.brakeTorque = 0f;
+                wheel.ApplyBrakeTorque(0f);
             }
         }
 
@@ -59,23 +64,48 @@ public class CarController : MonoBehaviour
 
     private void ApplySteering()
     {
-        //smoothly interpolate the steering angle for a delayed effect
-        currentSteerAngle = Mathf.Lerp(currentSteerAngle, targetSteerAngle, Time.deltaTime * steeringSmoothness);
+        currentSteerAngle = Mathf.Lerp(currentSteerAngle, targetSteerAngle, Time.deltaTime * steeringSmoothness);//smooth interpolate to ad a delay effect (turns are not instant)
+        switch (steeringMode)
+        {
+            case SteeringMode.FrontWheel:
+                //front wheels only
+                wheels[0].ApplySteering(currentSteerAngle);
+                wheels[1].ApplySteering(currentSteerAngle); 
+                break;
 
-        //aapply steering to front wheels (assuming wheels 0 and 1 are the front wheels)
-        wheelColliders[0].steerAngle = currentSteerAngle;
-        wheelColliders[1].steerAngle = currentSteerAngle;
+            case SteeringMode.RearWheel:
+                //rear wheels only
+                float rearSteerAngle = currentSteerAngle;
+                if (carRb.velocity.magnitude < 10f) 
+                {
+                    rearSteerAngle = -currentSteerAngle; //opositre direction when on lowSpeed
+                }
+                wheels[2].ApplySteering(rearSteerAngle); 
+                wheels[3].ApplySteering(rearSteerAngle); 
+                break;
+
+            case SteeringMode.AllWheel:
+                foreach (var wheel in wheels)
+                {
+                    wheel.ApplySteering(currentSteerAngle);
+                }
+                break;
+        }
     }
 
-    private void UpdateWheelVisuals()
+    private void UpdateWheelsVisuals()
     {
-        for (int i = 0; i < wheelColliders.Length; i++)
+        foreach (var wheel in wheels)
         {
-            Vector3 pos;
-            Quaternion rot;
-            wheelColliders[i].GetWorldPose(out pos, out rot); // Get the Wheel Collider's position and rotation
-            wheelMeshes[i].position = pos; // Update the visual mesh's position
-            wheelMeshes[i].rotation = rot; // Update the visual mesh's rotation
+            wheel.UpdateWheelVisuals();
+        }
+    }
+
+    private void ApplySteeringResiatance()
+    {
+        foreach (var wheel in wheels)
+        {
+            wheel.ApplySteeringResistance(carRb);
         }
     }
 
