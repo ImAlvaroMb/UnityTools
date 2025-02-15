@@ -7,17 +7,17 @@ public class Wheel : MonoBehaviour
     public WheelCollider wheelCollider;
     public Transform wheelMesh;
     [SerializeField] private bool isTractionWheel;
-    [SerializeField] private float motorTorque; 
-    [SerializeField] private float brakeTorque; 
-    [SerializeField] private float steerAngle; 
-    [SerializeField] private float steeringResistance;// resistance to prevent overturning (generate a force to counter the cardrigid bodys centrifugal force) 
+    [SerializeField] private float motorTorque;
+    [SerializeField] private float brakeTorque;
+    [SerializeField] private float steerAngle;
+    [SerializeField] private float steeringResistance;//resistance to prevent overturning (generate a force to counter the cardrigid bodys centrifugal force) 
 
 
     public void ApplyMotorTorque(float torque)
     {
-        if(isTractionWheel)
+        if (isTractionWheel)
         {
-            wheelCollider.motorTorque = torque; 
+            wheelCollider.motorTorque = torque;
         }
     }
 
@@ -31,9 +31,9 @@ public class Wheel : MonoBehaviour
         wheelCollider.steerAngle = angle;
     }
 
-    public void ApplySteeringResistance(Rigidbody carRb)
+    public void ApplySteeringResistance(Rigidbody carRb)//each wheel individually generates a little bit of force on the oposite direction that its going
     {
-        Vector3 steeringDirection = transform.right;//directionm of the steering force
+        Vector3 steeringDirection = transform.forward;//directionm of the steering force
         Vector3 tireWorldVelocity = carRb.GetPointVelocity(wheelCollider.transform.position);//wheel velocity
 
         float steeringVelocity = Vector3.Dot(steeringDirection, tireWorldVelocity);//velocity in the steering direction
