@@ -33,7 +33,7 @@ public class Wheel : MonoBehaviour
 
     public void ApplySteeringResistance(Rigidbody carRb)//each wheel individually generates a little bit of force on the oposite direction that its going
     {
-        Vector3 steeringDirection = transform.forward;//directionm of the steering force
+        Vector3 steeringDirection = transform.right;//directionm of the steering force
         Vector3 tireWorldVelocity = carRb.GetPointVelocity(wheelCollider.transform.position);//wheel velocity
 
         float steeringVelocity = Vector3.Dot(steeringDirection, tireWorldVelocity);//velocity in the steering direction
