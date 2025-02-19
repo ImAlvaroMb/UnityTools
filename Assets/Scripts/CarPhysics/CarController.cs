@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class CarController : MonoBehaviour
@@ -32,6 +33,9 @@ public class CarController : MonoBehaviour
     [SerializeField] private float turnDownwardForceMultiplier; //multiplier when turning
     [SerializeField] private float speedDownwardForceMultiplier; //force based on speed
 
+    [Header("Testing")]
+    public TextMeshProUGUI speedText;
+
     private float targetSteerAngle;
     private float currentSteerAngle;
 
@@ -46,6 +50,7 @@ public class CarController : MonoBehaviour
         HandleInput();
         ApplySteering();
         ApplyRollPrevention();
+        UpdateSpeedText();
 
         if(canCheckRaycast)
         {
@@ -171,6 +176,11 @@ public class CarController : MonoBehaviour
             hasInvokedRaycastDuration = true;
         }
         //do raycast logficx
+    }
+
+    private void UpdateSpeedText()
+    {
+        speedText.text = "Speed: " + carRb.velocity.z.ToString() +" km/h";
     }
 
 }
