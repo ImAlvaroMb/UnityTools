@@ -16,6 +16,9 @@ public class CarController : MonoBehaviour
     [Header("Speed Limiters")]
     [SerializeField] private float maxRbSpeed;
 
+    [Header("Handbrake")]
+    [SerializeField] private float brakeTime;
+
     [Header("Raycats parameters")]
     public Transform buttomRayPoint;
     public Transform rightRayPoint;
@@ -49,7 +52,6 @@ public class CarController : MonoBehaviour
     {
         HandleInput();
         ApplySteering();
-        ApplyRollPrevention();
         UpdateSpeedText();
 
         if(canCheckRaycast)
@@ -72,18 +74,27 @@ public class CarController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        ApplySteeringResiatance();
+        //ApplySteeringResiatance();
+        //ApplyRollPrevention();
         UpdateWheelsVisuals();
     }
 
     private void HandleInput()
     {
 
-        //acceleration
-        float acceleration = Input.GetAxis("Vertical") * maxMotorTorque;
+        float accelerationInput = Input.GetAxis("Vertical");
+        float acceleration = accelerationInput * maxMotorTorque;
+
         foreach (var wheel in wheels)
         {
-            wheel.ApplyMotorTorque(acceleration);
+            if (accelerationInput != 0)
+            {
+                wheel.ApplyMotorTorque(acceleration);
+            }
+            else
+            {
+                wheel.ApplyMotorTorque(0);
+            }
         }
 
         //braking
@@ -92,18 +103,26 @@ public class CarController : MonoBehaviour
             foreach (var wheel in wheels)
             {
                 wheel.ApplyBrakeTorque(maxBrakeTorque);
+                Debug.Log("NBraeking");
             }
-        }
-        else
+            //carRb.velocity = Vector3.zero;
+        } else
         {
             foreach (var wheel in wheels)
             {
                 wheel.ApplyBrakeTorque(0f);
             }
         }
+        
+       
 
         //steering
         targetSteerAngle = maxSteerAngle * Input.GetAxis("Horizontal");
+    }
+
+    private void ApplyBrakeEffect()
+    {
+        //evaluate over t to reduce speed in brake time
     }
 
     private void ApplySteering()

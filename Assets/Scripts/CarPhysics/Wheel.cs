@@ -7,9 +7,9 @@ public class Wheel : MonoBehaviour
     public WheelCollider wheelCollider;
     public Transform wheelMesh;
     [SerializeField] private bool isTractionWheel;
-    [SerializeField] private float motorTorque;
-    [SerializeField] private float brakeTorque;
-    [SerializeField] private float steerAngle;
+    //[SerializeField] private float motorTorque;
+    //[SerializeField] private float brakeTorque;
+    //[SerializeField] private float steerAngle;
     [SerializeField] private float steeringResistance;//resistance to prevent overturning (generate a force to counter the cardrigid bodys centrifugal force) 
 
 
