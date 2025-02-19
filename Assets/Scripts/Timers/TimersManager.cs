@@ -14,7 +14,7 @@ public class TimersManager : MonoBehaviour
 
     public static TimersManager Instance { get; private set; }
 
-    private class Timer
+    public class Timer
     {
         public float duration;
         public float elapsedTime;
@@ -65,13 +65,13 @@ public class TimersManager : MonoBehaviour
         }
     }
 
-    public void StartTimer(float duration, Action callback, string id, bool isRepating = false, bool isAccessible = false)
+    public Timer StartTimer(float duration, Action callback, string id, bool isRepating = false, bool isAccessible = false)
     {
         Timer timer;
         if(isAccessible && accessibleTimers.ContainsKey(id))
         {
             Debug.LogWarning($"A timer with the identifier : {id} already exists");
-            return;
+            return null;
         } 
 
         if(timersPool.Count > 0) // there is aveliable timers in the opool
@@ -88,7 +88,7 @@ public class TimersManager : MonoBehaviour
         } else
         {
             Debug.LogWarning($"Timer pool size reached its limit: {maxPoolSize}");
-            return;
+            return null;
         }
 
         if (isAccessible && !accessibleTimers.ContainsKey(id))
@@ -96,6 +96,7 @@ public class TimersManager : MonoBehaviour
             accessibleTimers.Add(id, timer);
         }
         activeTimers.AddLast(timer);
+        return timer;
     }
 
     public void StopTimer(string id)
