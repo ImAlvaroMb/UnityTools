@@ -18,9 +18,7 @@ public class CarController : MonoBehaviour
     [SerializeField] private float maxRbSpeed;
 
     [Header("Handbrake")]
-    [SerializeField] private float brakeTime;
-    private bool isBraking;
-    private Timer brakeTimer;
+    [SerializeField] private BrakeMode brakeMode = BrakeMode.AllWheels ;
 
     [Header("Raycats parameters")]
     public Transform buttomRayPoint;
@@ -95,16 +93,14 @@ public class CarController : MonoBehaviour
         //braking
         if (Input.GetKey(KeyCode.Space))
         {
-            foreach (var wheel in wheels)
+            ApplyBrake();
+            /*foreach (var wheel in wheels)
             {
                 wheel.ApplyBrakeTorque(maxBrakeTorque);
                 Debug.Log("NBraeking");
-            }
-            //carRb.velocity = Vector3.zero;
+            }*/
         } else
         {
-            isBraking = false;
-            TimersManager.Instance.StopTimer("brake");
             foreach (var wheel in wheels)
             {
                 wheel.ApplyBrakeTorque(0f);
@@ -115,6 +111,27 @@ public class CarController : MonoBehaviour
 
         //steering
         targetSteerAngle = maxSteerAngle * Input.GetAxis("Horizontal");
+    }
+
+    private void ApplyBrake()
+    {
+        //to do add logic for all brake Types
+        switch (brakeMode)
+        {
+            case BrakeMode.AllWheels:
+                foreach (var wheel in wheels)
+                {
+                    wheel.ApplyBrakeTorque(maxBrakeTorque);
+                }
+                break;
+
+            case BrakeMode.FrontWheelsStronger:
+                wheels[0].ApplyBrakeTorque(maxBrakeTorque * 0.8f);
+                wheels[1].ApplyBrakeTorque(maxBrakeTorque * 0.8f);
+                wheels[2].ApplyBrakeTorque(maxBrakeTorque * 0.2f);
+                wheels[3].ApplyBrakeTorque(maxBrakeTorque * 0.2f);
+                break;
+        }
     }
 
     /*private void ApplyBrakeEffect()
