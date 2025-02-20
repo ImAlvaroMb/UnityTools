@@ -13,34 +13,6 @@ public class TimersManager : MonoBehaviour
 
     public static TimersManager Instance { get; private set; }
 
-    public class Timer
-    {
-        public float duration;
-        public float elapsedTime;
-        public Action callback;
-        public bool isRepating;
-        public string id;
-
-        public Timer(float duration, Action callback, bool isRepating, string id)
-        {
-            Reset(duration, callback, isRepating, id);
-        }
-
-        public void Reset(float duration, Action callback, bool isRepating, string id)
-        {
-            this.duration = duration;
-            elapsedTime = 0;
-            this.callback = callback;
-            this.isRepating = isRepating;
-            this.id = id;
-        }
-
-        public float getProgress()
-        {
-            return duration > 0 ? duration / elapsedTime : 1f;
-        }
-    }
-
     private void Awake()
     {
         if (Instance == null)
@@ -59,12 +31,12 @@ public class TimersManager : MonoBehaviour
     {
         for (int i = 0; i < initalPoolSize; i++)
         {
-            var Timer = new Timer(0, null, false, "");
+            var Timer = new Timer(0, null, null, false, "");
             timersPool.AddLast(Timer);
         }
     }
 
-    public Timer StartTimer(float duration, Action callback, string id, bool isRepating = false, bool isAccessible = false)
+    public Timer StartTimer(float duration, Action callback, Action<float> timerUpdate, string id, bool isRepating = false, bool isAccessible = false)
     {
         Timer timer;
         if(isAccessible && accessibleTimers.ContainsKey(id))
@@ -73,15 +45,15 @@ public class TimersManager : MonoBehaviour
             return null;
         } 
 
-        if(timersPool.Count > 0) // there is aveliable timers in the opool
+        if(timersPool.Count > 0) //there is aveliable timers in the opool
         {
             var node = timersPool.First;
             timer = node.Value;
             timersPool.RemoveFirst();
-            timer.Reset(duration, callback, isRepating, id);
-        } else if (timersPool.Count + 1 < maxPoolSize) // there are no aveliable timers on the pool creates a new one if it doesnt exceed the maxLimit
+            timer.Reset(duration, callback, timerUpdate, isRepating, id);
+        } else if (timersPool.Count + 1 < maxPoolSize) //there are no aveliable timers on the pool creates a new one if it doesnt exceed the maxLimit
         {
-            timer = new Timer(duration, callback, isRepating, id);
+            timer = new Timer(duration, callback,timerUpdate, isRepating, id);
             timersPool.AddLast(timer);
             Debug.Log($"Expanding pool size to {timersPool.Count + 1}");
         } else
@@ -121,13 +93,14 @@ public class TimersManager : MonoBehaviour
 
     private void Update()
     {
-        foreach(var timer in new LinkedList<Timer>(activeTimers)) // create a copy to ensure safety while iteratoin over the list
+        foreach(var timer in new LinkedList<Timer>(activeTimers)) //create a copy to ensure safety while iteratoin over the list
         {
             timer.elapsedTime += Time.deltaTime;
+            timer.timerUpdate?.Invoke(timer.getProgress());//call progress if it has content on it
 
             if(timer.elapsedTime >= timer.duration)
             {
-                timer.callback?.Invoke(); // the ? (non-conditional operator) this expression evaluates to null if no callback has been assigned to prevent NullReferences
+                timer.callback?.Invoke(); //the ? (non-conditional operator) this expression evaluates to null if no callback has been assigned to prevent NullReferences
                 if(timer.isRepating)
                 {
                     timer.elapsedTime = 0;

@@ -9,13 +9,7 @@ public class TimersTest : MonoBehaviour
     public bool usesId;
     public string id;
     public string printText;
-    void Start()
-    {
-        TimersManager.Instance.StartTimer(timerTime, () =>
-        {
-            Debug.Log(printText);
-        }, id, isRepeating, usesId);
-    }
+   
 
     
 }

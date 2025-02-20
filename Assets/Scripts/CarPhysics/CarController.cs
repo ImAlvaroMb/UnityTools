@@ -1,3 +1,4 @@
+using System.Threading;
 using TMPro;
 using UnityEngine;
 
@@ -18,6 +19,8 @@ public class CarController : MonoBehaviour
 
     [Header("Handbrake")]
     [SerializeField] private float brakeTime;
+    private bool isBraking;
+    private Timer brakeTimer;
 
     [Header("Raycats parameters")]
     public Transform buttomRayPoint;
@@ -59,14 +62,6 @@ public class CarController : MonoBehaviour
             DetectCarState();
         } else
         {
-            if(!hasInvokedRaycastTimer)
-            {
-                TimersManager.Instance.StartTimer(raycastCooldown, () =>
-                {
-                    canCheckRaycast = true;
-                }, raycastName, false, false);
-                hasInvokedRaycastTimer = true;
-            }
             
         }
 
@@ -75,7 +70,7 @@ public class CarController : MonoBehaviour
     private void FixedUpdate()
     {
         //ApplySteeringResiatance();
-        //ApplyRollPrevention();
+        ApplyRollPrevention();
         UpdateWheelsVisuals();
     }
 
@@ -108,6 +103,8 @@ public class CarController : MonoBehaviour
             //carRb.velocity = Vector3.zero;
         } else
         {
+            isBraking = false;
+            TimersManager.Instance.StopTimer("brake");
             foreach (var wheel in wheels)
             {
                 wheel.ApplyBrakeTorque(0f);
@@ -120,10 +117,29 @@ public class CarController : MonoBehaviour
         targetSteerAngle = maxSteerAngle * Input.GetAxis("Horizontal");
     }
 
-    private void ApplyBrakeEffect()
+    /*private void ApplyBrakeEffect()
     {
-        //evaluate over t to reduce speed in brake time
-    }
+        if(!isBraking)
+        {
+            //evaluate over t to reduce speed in brake time
+            isBraking = true;
+            float initialSpeed = carRb.velocity.magnitude; 
+            TimersManager.Instance.StartTimer(brakeTime,
+            () =>
+            {
+                isBraking = false;
+                carRb.velocity = Vector3.zero; //ensure the car is stopped
+            },
+            (progress) =>
+            {
+                float reversedProgress = 1f - progress;
+                float newSpeed = Mathf.Lerp(initialSpeed, 0, reversedProgress); //reduce speed progressevely
+                //carRb.velocity = carRb.velocity.normalized * reversedProgress; //maintain direction
+            }, "brake", false, true);
+
+        }
+
+    }*/
 
     private void ApplySteering()
     {
@@ -188,11 +204,7 @@ public class CarController : MonoBehaviour
     {
         if(!hasInvokedRaycastDuration)
         {
-            TimersManager.Instance.StartTimer(raycastCooldown, () =>
-            {
-                canCheckRaycast = false;
-            }, raycastName + "1", false, false);
-            hasInvokedRaycastDuration = true;
+           
         }
         //do raycast logficx
     }
