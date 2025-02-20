@@ -199,7 +199,9 @@ public class CarController : MonoBehaviour
 
     private void UpdateSpeedText()
     {
-        speedText.text = "Speed: " + carRb.velocity.z.ToString() +" km/h";
+        float speedZ = Mathf.Abs(carRb.velocity.z);
+        float speedKmh = speedZ * 3.6f;
+        speedText.text = "Speed: " + speedKmh.ToString("F1") + " km/h";
     }
 
 }
