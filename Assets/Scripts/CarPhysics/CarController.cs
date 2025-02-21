@@ -18,7 +18,11 @@ public class CarController : MonoBehaviour
     [SerializeField] private float maxRbSpeed;
 
     [Header("Handbrake")]
-    [SerializeField] private BrakeMode brakeMode = BrakeMode.AllWheels ;
+    [SerializeField] private BrakeMode brakeMode = BrakeMode.AllWheels;
+
+    [Header("Dashing")]
+    [SerializeField] private float dashSpeed;
+    public bool isDashing { get; set; } = false;
 
     [Header("Raycats parameters")]
     public Transform buttomRayPoint;
@@ -52,7 +56,10 @@ public class CarController : MonoBehaviour
     private void Update()
     {
         HandleInput();
-        ApplySteering();
+        if(!isDashing)
+        {
+            ApplySteering();
+        }
         UpdateSpeedText();
 
         if(canCheckRaycast)
@@ -82,7 +89,8 @@ public class CarController : MonoBehaviour
         {
             if (accelerationInput != 0)
             {
-                wheel.ApplyMotorTorque(acceleration);
+                if(!isDashing)
+                    wheel.ApplyMotorTorque(acceleration);
             }
             else
             {
@@ -93,7 +101,8 @@ public class CarController : MonoBehaviour
         //braking
         if (Input.GetKey(KeyCode.Space))
         {
-            ApplyBrake();
+            if(!isDashing)
+                ApplyBrake();
             /*foreach (var wheel in wheels)
             {
                 wheel.ApplyBrakeTorque(maxBrakeTorque);
@@ -105,6 +114,11 @@ public class CarController : MonoBehaviour
             {
                 wheel.ApplyBrakeTorque(0f);
             }
+        }
+
+        if(Input.GetKey(KeyCode.LeftShift))
+        {
+            HandleDash();
         }
         
        
@@ -132,6 +146,25 @@ public class CarController : MonoBehaviour
                 wheels[3].ApplyBrakeTorque(maxBrakeTorque * 0.2f);
                 break;
         }
+    }
+
+    private void HandleDash()
+    {
+        if(!isDashing) 
+        {
+            isDashing = true;
+            Vector3 dashDirection = transform.forward;
+            carRb.isKinematic = true;
+            TimersManager.Instance.StartTimer(0.7f, () =>
+            {
+                isDashing = false;
+                carRb.isKinematic = false;
+            }, (progress) =>
+            {
+                transform.position += dashDirection * dashSpeed * Time.deltaTime;
+            }, "dash", false, false);
+        }
+        
     }
 
     /*private void ApplyBrakeEffect()
