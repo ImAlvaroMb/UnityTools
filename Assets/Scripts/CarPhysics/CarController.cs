@@ -22,6 +22,8 @@ public class CarController : MonoBehaviour
 
     [Header("Dashing")]
     [SerializeField] private float dashSpeed;
+    [SerializeField] private float dashForce;
+    [SerializeField] private float maxRbVelocityWhileDashing;
     public bool isDashing { get; set; } = false;
 
     [Header("Raycats parameters")]
@@ -118,7 +120,8 @@ public class CarController : MonoBehaviour
 
         if(Input.GetKey(KeyCode.LeftShift))
         {
-            HandleDash();
+            //HandleDashWithoutPhysics();
+            HandleDashWithPhysics();
         }
         
        
@@ -148,7 +151,7 @@ public class CarController : MonoBehaviour
         }
     }
 
-    private void HandleDash()
+    private void HandleDashWithoutPhysics()
     {
         if(!isDashing) 
         {
@@ -165,6 +168,29 @@ public class CarController : MonoBehaviour
             }, "dash", false, false);
         }
         
+    }
+
+    private void HandleDashWithPhysics()
+    {
+        if(!isDashing)
+        {
+            isDashing = true;
+            Vector3 dashDirection = transform.forward.normalized;
+            TimersManager.Instance.StartTimer(1.5f, () =>
+            {
+                isDashing = false;
+            }, (progress) => {
+                carRb.AddForce(dashDirection * dashForce, ForceMode.Impulse);
+                Vector3 clampedVelocity = carRb.velocity;//get current speed
+
+                if(clampedVelocity.magnitude > maxRbVelocityWhileDashing)
+                {
+                    clampedVelocity = clampedVelocity.normalized * maxRbVelocityWhileDashing;//retain direction (normalize) & scale it down to then apply it to rbvelocirty
+                    carRb.velocity = clampedVelocity;
+                }
+
+            }, "dash", false, false);
+        }
     }
 
     /*private void ApplyBrakeEffect()
