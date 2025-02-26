@@ -1,0 +1,2 @@
+Assets/SimpleLowPolyNature/Prefabs/Tent.prefab
+Assets/SimpleLowPolyNature/Prefabs/WoodFence2.prefab

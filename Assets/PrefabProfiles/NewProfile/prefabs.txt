@@ -1,1 +1,2 @@
-Assets/SimpleLowPolyNature/Prefabs/Grass3.prefab
+Assets/SimpleLowPolyNature/Prefabs/PlantEx3.prefab
+Assets/SimpleLowPolyNature/Prefabs/Tree1.prefab

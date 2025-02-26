@@ -19,10 +19,10 @@ public class PrefabPlacerTool : EditorWindow
     private const string PROFILE_FOLDER_PATH = "Assets/PrefabProfiles/"; //where all the profiles / prefabs data will be saved
     private const string PREFAB_PROFILES_KEY = "PrefabPlacerProfiles"; //editor prefs persistance key
 
-    [MenuItem("Tools/Prefab Placer")]
+    [MenuItem("Tools/Prefab Placer OLD")]
     public static void ShowWindow()
     {
-        GetWindow<PrefabPlacerTool>("Prefab Placer");
+        GetWindow<PrefabPlacerTool>("Prefab Placer OLD");
     }
 
     private void OnEnable()
@@ -267,11 +267,11 @@ public class PrefabPlacerTool : EditorWindow
 
     private void GlobalKeyListener() //doesnt work for now
     {
-        if (isPlacingPrefab && Event.current != null && Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Escape)
+        /*if (isPlacingPrefab && Event.current != null && Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Escape)
         {
             CancelPlacingPrefab();
             Event.current.Use(); //prevent unity from handling this event by other UI elements just for this frame
-        }
+        }*/
     }
     //LISTENER + ACTION THAT SHOULD HAPPEN WHEN ON THE SCENEVIEW
     private void OnSceneGUI(SceneView sceneView)
@@ -291,11 +291,11 @@ public class PrefabPlacerTool : EditorWindow
             previewInstance.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
         }
 
-        /*if (e.type == EventType.MouseDrag && e.button == 1) 
+        if (e.type == EventType.MouseDrag && e.button == 1) 
         {
             previewInstance.transform.Rotate(Vector3.up, e.delta.x * 0.5f, Space.World);
             e.Use();
-        }*/
+        }
 
         if (e.type == EventType.MouseDown && e.button == 0)
         {
