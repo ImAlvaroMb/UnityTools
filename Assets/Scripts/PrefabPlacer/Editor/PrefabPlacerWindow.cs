@@ -121,7 +121,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
                 SaveSelectedProfile();
             }
 
-            // Rename Button
+            //rename Button
             if (GUILayout.Button("Rename Profile"))
             {
                 ShowRenameProfileWindow();
@@ -161,11 +161,12 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
             return;
 
         string oldName = profileNames[selectedProfileIndex];
-        if (PrefabProfileManager.ChangeProfileName(oldName, newName))
+        if (PrefabProfileManager.ChangeProfileName(oldName, newName))//funciton checks if the name is not already used or there are no errors
         {
             RefreshProfiles();
             selectedProfileIndex = System.Array.IndexOf(profileNames, newName);
             SaveSelectedProfile();
+            RefreshPrefabs();
         }
     }
 

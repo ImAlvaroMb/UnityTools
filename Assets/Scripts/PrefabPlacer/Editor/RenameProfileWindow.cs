@@ -8,8 +8,11 @@ public class RenameProfileWindow : EditorWindow
     private static string newProfileName = "";
     private static System.Action<string> onConfirm;
 
+    public static bool currenltyOnRenameWindow = false;
+
     public static void ShowWindow(string currentName, System.Action<string> confirmCallback)
     {
+        currenltyOnRenameWindow = true;
         newProfileName = currentName;
         onConfirm = confirmCallback;
 
@@ -27,10 +30,11 @@ public class RenameProfileWindow : EditorWindow
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Confirm"))
         {
+            currenltyOnRenameWindow = false;
             if (!string.IsNullOrEmpty(newProfileName))
             {
-                onConfirm?.Invoke(newProfileName);
-                Close();
+                onConfirm?.Invoke(newProfileName);//callback to the changeProfileName Fnction with the user input
+                Close(); 
             }
             else
             {
@@ -40,6 +44,7 @@ public class RenameProfileWindow : EditorWindow
 
         if (GUILayout.Button("Cancel"))
         {
+            currenltyOnRenameWindow = false;
             Close();
         }
         EditorGUILayout.EndHorizontal();

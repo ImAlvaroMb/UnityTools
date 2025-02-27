@@ -128,7 +128,15 @@ public static class PrefabProfileManager //handle file operations & data persist
         try
         {
             Directory.Move(oldPath, newPath);
+            string oldMetaPath = oldPath + ".meta";
+            string newMetaPath = newPath + ".meta"; //rename the meta file
+            if (File.Exists(oldMetaPath))
+            {
+                File.Move(oldMetaPath, newMetaPath);
+            }
+
             AssetDatabase.Refresh();
+
 
             //uipdate selected profile if it was renamed
             if (GetSelectedProfile() == oldName)
