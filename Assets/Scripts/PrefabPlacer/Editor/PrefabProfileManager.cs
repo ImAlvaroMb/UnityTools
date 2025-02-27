@@ -107,4 +107,41 @@ public static class PrefabProfileManager //handle file operations & data persist
             AssetDatabase.Refresh();
         }
     }
+
+    public static bool ChangeProfileName(string oldName, string newName)
+    {
+        if (string.IsNullOrEmpty(oldName)) return false;
+        if (string.IsNullOrEmpty(newName)) return false;
+        if (oldName == newName) return true; //no change needed
+
+        string oldPath = GetProfilePath(oldName);
+        string newPath = GetProfilePath(newName);
+
+        //check if new name already exists
+        if (Directory.Exists(newPath))
+        {
+            EditorUtility.DisplayDialog("Error", $"A profile named '{newName}' already exists.", "OK");
+            return false;
+        }
+
+        //rename directory
+        try
+        {
+            Directory.Move(oldPath, newPath);
+            AssetDatabase.Refresh();
+
+            //uipdate selected profile if it was renamed
+            if (GetSelectedProfile() == oldName)
+            {
+                SaveSelectedProfile(newName);
+            }
+
+            return true;
+        }
+        catch (System.Exception e)
+        {
+            EditorUtility.DisplayDialog("Error", $"Failed to rename profile: {e.Message}", "OK");
+            return false;
+        }
+    }
 }

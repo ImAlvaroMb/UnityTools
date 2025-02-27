@@ -107,7 +107,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         DrawPrefabSelection();
     }
 
-    private void DrawProfileManagement()//profiles handler
+    private void DrawProfileManagement()//profiles painting handler
     {
         EditorGUILayout.LabelField("Profile Management", EditorStyles.boldLabel);
 
@@ -119,6 +119,12 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
                 selectedProfileIndex = newIndex;
                 RefreshPrefabs();
                 SaveSelectedProfile();
+            }
+
+            // Rename Button
+            if (GUILayout.Button("Rename Profile"))
+            {
+                ShowRenameProfileWindow();
             }
         }
         else
@@ -140,7 +146,30 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         EditorGUILayout.EndHorizontal();
     }
 
-    private void DrawPrefabSelection()//prefab handler
+    private void ShowRenameProfileWindow()
+    {
+        if (selectedProfileIndex < 0 || selectedProfileIndex >= profileNames.Length)
+            return;
+
+        string currentName = profileNames[selectedProfileIndex];
+        RenameProfileWindow.ShowWindow(currentName, OnProfileRenamed);
+    }
+
+    private void OnProfileRenamed(string newName)
+    {
+        if (selectedProfileIndex < 0 || selectedProfileIndex >= profileNames.Length)
+            return;
+
+        string oldName = profileNames[selectedProfileIndex];
+        if (PrefabProfileManager.ChangeProfileName(oldName, newName))
+        {
+            RefreshProfiles();
+            selectedProfileIndex = System.Array.IndexOf(profileNames, newName);
+            SaveSelectedProfile();
+        }
+    }
+
+    private void DrawPrefabSelection()//prefab painting handler
     {
         EditorGUILayout.LabelField("Prefab Selection", EditorStyles.boldLabel);
 

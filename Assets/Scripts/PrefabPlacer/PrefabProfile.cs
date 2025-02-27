@@ -12,4 +12,12 @@ public class PrefabProfile
     {
         profileName = name;
     }
+
+    public void ChangePrefabProfileName(string newName)
+    {
+        if (!string.IsNullOrEmpty(newName))
+        {
+            profileName = newName;
+        }
+    }
 }
