@@ -307,7 +307,9 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
             foreach (string filePath in allFiles)
             {
-                string relativePath = "Assets" + filePath.Substring(Application.dataPath.Length);
+                // Normalize path to Unity format
+                string relativePath = "Assets" + filePath.Substring(Application.dataPath.Length)
+                                       .Replace('\\', '/'); // Convert backslashes to forward slashe
 
                 PrefabProfileManager.AddPrefabToProfile(
                     profileNames[selectedProfileIndex],
