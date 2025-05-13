@@ -1,7 +1,5 @@
 Assets/SimpleLowPolyNature/Prefabs/CampFire.prefab
 Assets/SimpleLowPolyNature/Prefabs/Cloud1.prefab
-Assets/SimpleLowPolyNature/Prefabs/Clouds1Layer.prefab
-Assets/SimpleLowPolyNature/Prefabs/Clouds2Layer.prefab
 Assets/SimpleLowPolyNature/Prefabs/FallenBranch.prefab
 Assets/SimpleLowPolyNature/Prefabs/Flower1.prefab
 Assets/SimpleLowPolyNature/Prefabs/Flower2.prefab
