@@ -1,3 +1,5 @@
+
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -6,12 +8,14 @@ public class PrefabPlacer //handles scene interaction (user inputs by keyboard) 
     private GameObject previewInstance;
     private GameObject targetPrefab;
     private bool isPlacing;
+    private ProfilePlacedObjectsTrackerSO activeTrackerSO;
 
-    public void StartPlacing(GameObject prefab)
+    public void StartPlacing(GameObject prefab, ProfilePlacedObjectsTrackerSO trackerSO)
     {
         if (prefab == null) return;
 
         targetPrefab = prefab;
+        activeTrackerSO = trackerSO;
         isPlacing = true;
         CreatePreviewInstance();
         SceneView.duringSceneGui += OnSceneGUI;
@@ -26,14 +30,14 @@ public class PrefabPlacer //handles scene interaction (user inputs by keyboard) 
 
     private void CreatePreviewInstance()
     {
-        previewInstance = Object.Instantiate(targetPrefab);
+        previewInstance = UnityEngine.Object.Instantiate(targetPrefab);
         previewInstance.hideFlags = HideFlags.HideAndDontSave;
     }
 
     private void DestroyPreviewInstance()
     {
         if (previewInstance != null)
-            Object.DestroyImmediate(previewInstance);
+            UnityEngine.Object.DestroyImmediate(previewInstance);
     }
 
     private void OnSceneGUI(SceneView sceneView)
@@ -83,8 +87,24 @@ public class PrefabPlacer //handles scene interaction (user inputs by keyboard) 
         GameObject instance = PrefabUtility.InstantiatePrefab(targetPrefab) as GameObject;
         if(instance != null)
         {
+            //ProfilePlacedObjectsTrackerSO trackerSO = //PrefabPlacerWindow.
             Undo.RegisterCreatedObjectUndo(instance, $"Placed prefab '{instance.name}' by prefab placer tool"); // register the action to the undo history
             instance.transform.SetPositionAndRotation(previewInstance.transform.position, previewInstance.transform.rotation);
+
+            var marker = instance.AddComponent<PrefabPlacerObjectMarker>();
+            marker.trackingSO = activeTrackerSO;
+            marker.uniqueID = Guid.NewGuid().ToString();
+
+            activeTrackerSO.AddPlacement(new PlacementData
+            {
+                UniqueID = marker.uniqueID,
+                prefab = instance,
+                position = instance.transform.position,
+                rotation = instance.transform.rotation,
+                scale = instance.transform.localScale
+            });
+
+            EditorUtility.SetDirty(activeTrackerSO);
         }
         StopPlacing();
     }

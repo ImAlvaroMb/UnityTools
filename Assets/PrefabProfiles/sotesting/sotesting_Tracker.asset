@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85cc0911844f7174a90768807f64bca5, type: 3}
+  m_Name: sotesting_Tracker
+  m_EditorClassIdentifier: 
+  placedPrefabs:
+  - UniqueID: fd6fb10c-0fcc-422c-9f89-03fe2bd405a5
+    prefab: {fileID: 0}
+    position: {x: -8.391439, y: 1.2258356e-16, z: -5.5206733}
+    rotation: {x: 0, y: 0, z: 0, w: 1}
+    scale: {x: 1, y: 1, z: 1}
+  - UniqueID: e83273f4-7473-4295-aa6e-0fb321bf9837
+    prefab: {fileID: 0}
+    position: {x: -5.419696, y: -3.0946566e-16, z: 13.937096}
+    rotation: {x: 0, y: 0, z: 0, w: 1}
+    scale: {x: 1, y: 1, z: 1}
+  - UniqueID: 594628fe-0e20-47b6-8710-936abb1ec7f1
+    prefab: {fileID: 0}
+    position: {x: 4.057092, y: 4.1031417e-17, z: -1.8478906}
+    rotation: {x: 0, y: 0, z: 0, w: 1}
+    scale: {x: 1, y: 1, z: 1}
+  - UniqueID: cdf8b5ac-7cf8-44ee-9fe0-5d9a91b37641
+    prefab: {fileID: 0}
+    position: {x: -2.400887, y: 1.1413789e-16, z: -5.1403136}
+    rotation: {x: 0, y: 0, z: 0, w: 1}
+    scale: {x: 1, y: 1, z: 1}

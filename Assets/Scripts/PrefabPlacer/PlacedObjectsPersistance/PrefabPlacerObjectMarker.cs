@@ -7,15 +7,15 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class PrefabPlacerObjectMarker : MonoBehaviour
 {
-    public ScriptableObject trackingSO;
-    public string prefabGUID;
-    public string instanceID;
+    public ProfilePlacedObjectsTrackerSO trackingSO;
+    public string uniqueID;
 
     private void OnDestroy()
     {
         if(!EditorApplication.isPlayingOrWillChangePlaymode && trackingSO != null)
         {
-            
+            trackingSO.RemoveByUniqueID(uniqueID);
+            EditorUtility.SetDirty(trackingSO); // save the SO so this actually persists
         }
     }
 }

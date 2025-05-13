@@ -13,6 +13,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
     private int selectedPrefabIndex = 0;
     private Vector2 scrollPosition;
     private PrefabPlacer placer = new PrefabPlacer();
+    public ProfilePlacedObjectsTrackerSO activeTracker;
 
     [Header("Constants")]
     private const float MIN_WINDOW_HEIGHT = 350f;
@@ -101,12 +102,15 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         if (profileNames.Length == 0 || selectedProfileIndex >= profileNames.Length)
         {
             prefabs = new List<GameObject>();
+            activeTracker = null;
             return;
         }
 
         string selectedProfile = profileNames[selectedProfileIndex];
         prefabs = PrefabProfileManager.GetPrefabsForProfile(selectedProfile);
         selectedPrefabIndex = Mathf.Clamp(selectedPrefabIndex, 0, prefabs.Count - 1);
+
+        activeTracker = PrefabProfileManager.GetTrackerForProfile(selectedProfile); // load current tracker SO
         Repaint();
     }
 
@@ -392,7 +396,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         if (selectedPrefabIndex >= 0 && selectedPrefabIndex < prefabs.Count)
         {
             placer.StopPlacing();
-            placer.StartPlacing(prefabs[selectedPrefabIndex]);
+            placer.StartPlacing(prefabs[selectedPrefabIndex], activeTracker);
         }
     }
 }

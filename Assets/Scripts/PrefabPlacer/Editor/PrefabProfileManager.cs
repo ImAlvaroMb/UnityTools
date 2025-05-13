@@ -17,8 +17,14 @@ public static class PrefabProfileManager //handle file operations & data persist
         if (!Directory.Exists(fullPath))
         {
             Directory.CreateDirectory(fullPath);
-            AssetDatabase.Refresh();
+
+            // create and save the tracker SO
+            var tracker = ScriptableObject.CreateInstance<ProfilePlacedObjectsTrackerSO>();
+            AssetDatabase.CreateAsset(tracker, Path.Combine(fullPath, $"{profileName}_Tracker.asset"));
+            AssetDatabase.SaveAssets();
+
             SaveSelectedProfile(profileName);
+            AssetDatabase.Refresh();
         }
     }
 
@@ -36,6 +42,12 @@ public static class PrefabProfileManager //handle file operations & data persist
                 ClearSelectedProfile();
             }
         }
+    }
+
+    public static ProfilePlacedObjectsTrackerSO GetTrackerForProfile(string profileName)
+    {
+        string path = Path.Combine(PROFILE_FOLDER_PATH, profileName, $"{profileName}_Tracker.asset");
+        return AssetDatabase.LoadAssetAtPath<ProfilePlacedObjectsTrackerSO>(path);
     }
 
     public static string[] GetAllProfileNames()

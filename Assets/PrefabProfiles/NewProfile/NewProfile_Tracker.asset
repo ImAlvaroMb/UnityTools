@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85cc0911844f7174a90768807f64bca5, type: 3}
+  m_Name: NewProfile_Tracker
+  m_EditorClassIdentifier: 
+  placedPrefabs:
+  - UniqueID: 8970e0ed-5783-49a0-ab24-634569605091
+    prefab: {fileID: 0}
+    position: {x: -1.7359171, y: -3.286154e-16, z: 14.7995205}
+    rotation: {x: 0, y: 0, z: 0, w: 1}
+    scale: {x: 1, y: 1, z: 1}
+  - UniqueID: e0574d5e-ab1d-495e-98bb-c6e8310081dc
+    prefab: {fileID: 0}
+    position: {x: 2.920074, y: -3.3215398e-17, z: 1.4958885}
+    rotation: {x: 0, y: 0, z: 0, w: 1}
+    scale: {x: 1, y: 1, z: 1}

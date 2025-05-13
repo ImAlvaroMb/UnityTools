@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ProfilePlacedObjectsTracker", menuName = "Tools/PrefabPlacer/ProfilePlacedObjectsTracker")]
-public class ProfilePlacedObjectsTracker : MonoBehaviour
+public class ProfilePlacedObjectsTrackerSO : ScriptableObject
 {
     public List<PlacementData> placedPrefabs = new List<PlacementData>();
 
