@@ -14,13 +14,22 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
     private Vector2 scrollPosition;
     private PrefabPlacer placer = new PrefabPlacer();
 
+    [Header("Constants")]
+    private const float MIN_WINDOW_HEIGHT = 350f;
+    private const float MIN_WINDOW_WIDTH = 400f;
+
+    private const float DRAG_AND_DROP_MIN_HEIGHT = 50f;
+    private const float DRAG_AND_DROP_MAX_HEIGHT = 50f;
+
     [MenuItem("Tools/Prefab Placer")]
     public static void ShowWindow() => GetWindow<PrefabPlacerWindow>("Prefab Placer");
 
     private void OnEnable()
     {
+        minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
         EditorApplication.projectChanged += RefreshProfiles;
         RefreshProfiles();
+        LoadSelectedProfile();
         ValidateProfileSelection();
     }
 
@@ -122,11 +131,18 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
                 SaveSelectedProfile();
             }
 
+            EditorGUILayout.BeginHorizontal();
             //rename Button
             if (GUILayout.Button("Rename Profile"))
-            {
-                ShowRenameProfileWindow();
-            }
+                ShowRenameProfileWindow();                    
+
+            if (GUILayout.Button("Create New Profile"))
+                ShowProfileCreationDialog();
+
+            if (GUILayout.Button("Delete Current Profile"))
+                ShowProfileDeletionDialog();
+
+            EditorGUILayout.EndHorizontal();
         }
         else
         {
@@ -138,13 +154,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
             return;
         }
 
-        EditorGUILayout.BeginHorizontal();
-        if (GUILayout.Button("Create New Profile"))
-            ShowProfileCreationDialog();
-
-        if (GUILayout.Button("Delete Current Profile"))
-            ShowProfileDeletionDialog();
-        EditorGUILayout.EndHorizontal();
+        
     }
 
     private void ShowRenameProfileWindow()
@@ -205,7 +215,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
     private void DetectPrefabDrop()
     {
-        Rect dropArea = GUILayoutUtility.GetRect(0, 1000, 100, 100);
+        Rect dropArea = GUILayoutUtility.GetRect(0, 1000, DRAG_AND_DROP_MIN_HEIGHT, DRAG_AND_DROP_MAX_HEIGHT);
         GUI.Box(dropArea, "Drag prefabs here to add to profile", EditorStyles.helpBox);
 
         // detect Drag-and-Drop
