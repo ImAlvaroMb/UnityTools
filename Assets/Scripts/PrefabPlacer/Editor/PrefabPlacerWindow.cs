@@ -173,6 +173,8 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
     private void DrawPrefabSelection()//prefab painting handler
     {
+        DetectPrefabDrop();
+
         EditorGUILayout.LabelField("Prefab Selection", EditorStyles.boldLabel);
 
         if (profileNames.Length == 0) return;
@@ -199,6 +201,42 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         {
             EditorGUILayout.HelpBox("No prefabs in this profile", MessageType.Info);
         }
+    }
+
+    private void DetectPrefabDrop()
+    {
+        Rect dropArea = GUILayoutUtility.GetRect(0, 1000, 100, 100);
+        GUI.Box(dropArea, "Drag prefabs here to add to profile", EditorStyles.helpBox);
+
+        // detect Drag-and-Drop
+        Event evt = Event.current;
+        if (dropArea.Contains(evt.mousePosition))
+        {
+            if (evt.type == EventType.DragUpdated || evt.type == EventType.DragPerform)
+            {
+                DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+
+                if (evt.type == EventType.DragPerform)
+                {
+                    DragAndDrop.AcceptDrag();
+
+                    foreach (Object draggedObject in DragAndDrop.objectReferences)
+                    {
+                        string path = AssetDatabase.GetAssetPath(draggedObject);
+
+                        if (PrefabUtility.GetPrefabAssetType(draggedObject) != PrefabAssetType.NotAPrefab)
+                        {
+                            PrefabProfileManager.AddPrefabToProfile(profileNames[selectedProfileIndex], path);
+                        }
+                    }
+
+                    RefreshPrefabs();
+                }
+
+                evt.Use();
+            }
+        }
+
     }
 
     private void DrawPrefabGrid()//show prefabs in grid structure

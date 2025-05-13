@@ -1,2 +1,5 @@
 Assets/SimpleLowPolyNature/Prefabs/PlantEx3.prefab
 Assets/SimpleLowPolyNature/Prefabs/Tree1.prefab
+Assets/SimpleLowPolyNature/Prefabs/Flower1.prefab
+Assets/SimpleLowPolyNature/Prefabs/Flower2.prefab
+Assets/SimpleLowPolyNature/Prefabs/Clouds2Layer.prefab
