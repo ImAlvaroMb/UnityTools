@@ -17,4 +17,9 @@ public class ProfilePlacedObjectsTrackerSO : ScriptableObject
     {
         placedPrefabs.RemoveAll(p => p.UniqueID == id); // remove all just as a safeguard
     }
+
+    public bool ContainsByUniqueID(string id)
+    {
+        return placedPrefabs.Exists(p => p.UniqueID == id);
+    }
 }

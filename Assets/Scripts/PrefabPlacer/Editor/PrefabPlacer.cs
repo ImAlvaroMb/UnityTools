@@ -3,12 +3,22 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-public class PrefabPlacer //handles scene interaction (user inputs by keyboard) and preview placement 
+public class PrefabPlacer : IPrefabPlacerMode //handles scene interaction (user inputs by keyboard) and preview placement 
 {
     private GameObject previewInstance;
     private GameObject targetPrefab;
     private bool isPlacing;
     private ProfilePlacedObjectsTrackerSO activeTrackerSO;
+
+    public void OnModeActivated()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnModeDeactivated()
+    {
+        throw new NotImplementedException();
+    }
 
     public void StartPlacing(GameObject prefab, ProfilePlacedObjectsTrackerSO trackerSO)
     {
@@ -108,4 +118,6 @@ public class PrefabPlacer //handles scene interaction (user inputs by keyboard) 
         }
         StopPlacing();
     }
+
+    
 }

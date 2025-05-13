@@ -13,7 +13,17 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
     private int selectedPrefabIndex = 0;
     private Vector2 scrollPosition;
     private PrefabPlacer placer = new PrefabPlacer();
+    private PrefabEraser eraser = new PrefabEraser();
     public ProfilePlacedObjectsTrackerSO activeTracker;
+
+    // MODES
+    private ToolMode currentToolMode = ToolMode.Place;
+    private enum ToolMode
+    {
+        Place,
+        Erase
+    }
+    private float eraserRadius = 2f;
 
     [Header("Constants")]
     private const float MIN_WINDOW_HEIGHT = 350f;
@@ -39,6 +49,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         EditorApplication.projectChanged -= RefreshProfiles;
         SaveSelectedProfile();
         placer.StopPlacing();
+        eraser.StopErasing();
     }
 
     private void ValidateProfileSelection()
@@ -118,7 +129,9 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
     {
         DrawProfileManagement();
         EditorGUILayout.Space(20);
-        DrawPrefabSelection();
+        DrawToolModeSlector();
+        DrawToolModeSettings();
+        //DrawPrefabSelection();
     }
 
     private void DrawProfileManagement()//profiles painting handler
@@ -183,6 +196,36 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
             SaveSelectedProfile();
             RefreshPrefabs();
         }
+    }
+
+    private void DrawToolModeSlector()
+    {
+        EditorGUILayout.LabelField("Tool Mode", EditorStyles.boldLabel);
+        currentToolMode = (ToolMode)EditorGUILayout.EnumPopup("Current Mode", currentToolMode);
+    }
+
+    private void DrawToolModeSettings()
+    {
+        switch (currentToolMode)
+        {
+            case ToolMode.Place:
+                eraser.StopErasing();
+                DrawPrefabSelection();
+                break;
+
+            case ToolMode.Erase:
+                placer.StopPlacing();
+                DrawEraseSettings();
+                break;
+        }
+    }
+
+    private void DrawEraseSettings()
+    {
+        EditorGUILayout.LabelField("Eraser Settings", EditorStyles.boldLabel);
+        eraserRadius = EditorGUILayout.Slider("Eraser Radius", eraserRadius, 0.1f, 10f);
+        eraser.eraserRadius = eraserRadius;
+        eraser.StartErasing(activeTracker);
     }
 
     private void DrawPrefabSelection()//prefab painting handler
