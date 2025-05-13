@@ -41,7 +41,7 @@ public class PrefabPlacer //handles scene interaction (user inputs by keyboard) 
         if (!isPlacing) return;
 
         Event e = Event.current;
-        if(!RenameProfileWindow.currenltyOnRenameWindow)//avoid refocus on sceneView when reanming a profile
+        if(!RenameProfileWindow.currenltyOnRenameWindow) //avoid refocus on sceneView when reanming a profile
         {
             sceneView.Focus(); //focus to sceneView to ensure that esc works to cancel prefab placement 
         }
@@ -81,7 +81,11 @@ public class PrefabPlacer //handles scene interaction (user inputs by keyboard) 
     private void PlacePrefabInScene()
     {
         GameObject instance = PrefabUtility.InstantiatePrefab(targetPrefab) as GameObject;
-        instance.transform.SetPositionAndRotation(previewInstance.transform.position, previewInstance.transform.rotation);
+        if(instance != null)
+        {
+            Undo.RegisterCreatedObjectUndo(instance, $"Placed prefab '{instance.name}' by prefab placer tool"); // register the action to the undo history
+            instance.transform.SetPositionAndRotation(previewInstance.transform.position, previewInstance.transform.rotation);
+        }
         StopPlacing();
     }
 }
