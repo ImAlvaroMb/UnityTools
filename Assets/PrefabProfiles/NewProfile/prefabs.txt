@@ -10,3 +10,4 @@ Assets/SimpleLowPolyNature/Prefabs/Rock9.prefab
 Assets/SimpleLowPolyNature/Prefabs/Rock10.prefab
 Assets/SimpleLowPolyNature/Prefabs/Rock11.prefab
 Assets/SimpleLowPolyNature/Prefabs/Rock12.prefab
+Assets/SimpleLowPolyNature/Prefabs/Mushroom2.prefab
