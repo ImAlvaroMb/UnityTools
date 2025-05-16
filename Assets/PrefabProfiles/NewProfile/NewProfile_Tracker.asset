@@ -12,4 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85cc0911844f7174a90768807f64bca5, type: 3}
   m_Name: NewProfile_Tracker
   m_EditorClassIdentifier: 
-  placedPrefabs: []
+  placedPrefabs:
+  - UniqueID: f8ceeb3d-b980-46e0-8858-3bbd7b96a695
+    prefab: {fileID: 0}
+    position: {x: -7.599573, y: 2.228812e-16, z: -10.037678}
+    rotation: {x: 0, y: 0, z: 0, w: 1}
+    scale: {x: 1, y: 1, z: 1}
+  - UniqueID: ad4b88b9-4203-4073-b765-a51a66540013
+    prefab: {fileID: 0}
+    position: {x: -2.4115365, y: 3.0215267e-16, z: -13.607745}
+    rotation: {x: 0, y: 0, z: 0, w: 1}
+    scale: {x: 1, y: 1, z: 1}
+  - UniqueID: 787b8724-71f9-4b45-9f5b-e0dda93ee621
+    prefab: {fileID: 0}
+    position: {x: -9.401763, y: 3.1353255e-16, z: -14.120251}
+    rotation: {x: 0, y: 0, z: 0, w: 1}
+    scale: {x: 1, y: 1, z: 1}
