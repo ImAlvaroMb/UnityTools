@@ -3,20 +3,24 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class PrefabEraser : IPrefabPlacerMode
+public class PrefabEraser : MonoBehaviour , IPrefabPlacerMode
 {
     private ProfilePlacedObjectsTrackerSO activeTrackerSO;
     public float eraserRadius;
     private bool isErasing;
     private bool doLogic = true;
-    public void OnModeActivated()
+    public void OnModeActivated(ProfilePlacedObjectsTrackerSO trackerSO)
     {
-        throw new System.NotImplementedException();
+        activeTrackerSO = trackerSO;
+        isErasing = true;
+        doLogic = true;
+        SceneView.duringSceneGui += OnSceneGUI;
     }
 
     public void OnModeDeactivated()
     {
-        throw new System.NotImplementedException();
+        isErasing = false;
+        SceneView.duringSceneGui -= OnSceneGUI;
     }
 
     public void StartErasing(ProfilePlacedObjectsTrackerSO trackerSO)

@@ -18,11 +18,13 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
     // MODES
     private ToolMode currentToolMode = ToolMode.Place;
+    private ToolMode previousToolMode = ToolMode.Erase;
     private enum ToolMode
     {
         Place,
         Erase
     }
+    private Dictionary<ToolMode, IPrefabPlacerMode> modeHandlers;
     private float eraserRadius = 2f;
 
     [Header("Constants")]
@@ -39,6 +41,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
     {
         minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
         EditorApplication.projectChanged += RefreshProfiles;
+        InitializeModeDictionary();
         RefreshProfiles();
         LoadSelectedProfile();
         ValidateProfileSelection();
@@ -50,6 +53,15 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         SaveSelectedProfile();
         placer.StopPlacing();
         eraser.StopErasing();
+    }
+
+    private void InitializeModeDictionary()
+    {
+        modeHandlers = new Dictionary<ToolMode, IPrefabPlacerMode>
+        {
+            { ToolMode.Place, placer},
+            { ToolMode.Erase, eraser}
+        };
     }
 
     private void ValidateProfileSelection()
@@ -206,6 +218,13 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
     private void DrawToolModeSettings()
     {
+        //if(currentToolMode != previousToolMode)
+        //{
+        //    modeHandlers[previousToolMode].OnModeDeactivated();
+        //    modeHandlers[currentToolMode].OnModeActivated(activeTracker);
+
+        //    previousToolMode = currentToolMode;
+        //}
         switch (currentToolMode)
         {
             case ToolMode.Place:

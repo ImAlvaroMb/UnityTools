@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IPrefabPlacerMode
 {
-    public abstract void OnModeActivated();
+    abstract void OnModeActivated(ProfilePlacedObjectsTrackerSO trackerSO);
 
-    public void OnModeDeactivated();
+    abstract void OnModeDeactivated();
 }

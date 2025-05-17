@@ -3,30 +3,33 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-public class PrefabPlacer : IPrefabPlacerMode //handles scene interaction (user inputs by keyboard) and preview placement 
+public class PrefabPlacer : MonoBehaviour, IPrefabPlacerMode //handles scene interaction (user inputs by keyboard) and preview placement 
 {
     private GameObject previewInstance;
     private GameObject targetPrefab;
     private bool isPlacing;
     private ProfilePlacedObjectsTrackerSO activeTrackerSO;
 
-    public void OnModeActivated()
+    public void OnModeActivated(ProfilePlacedObjectsTrackerSO trackerSO)
     {
-        throw new NotImplementedException();
+        activeTrackerSO = trackerSO;
+        isPlacing = true;
     }
 
     public void OnModeDeactivated()
     {
-        throw new NotImplementedException();
+        isPlacing = false;
+        SceneView.duringSceneGui -= OnSceneGUI;
+        DestroyPreviewInstance();
     }
 
     public void StartPlacing(GameObject prefab, ProfilePlacedObjectsTrackerSO trackerSO)
     {
         if (prefab == null) return;
 
-        targetPrefab = prefab;
         activeTrackerSO = trackerSO;
         isPlacing = true;
+        targetPrefab = prefab;
         CreatePreviewInstance();
         SceneView.duringSceneGui += OnSceneGUI;
     }
