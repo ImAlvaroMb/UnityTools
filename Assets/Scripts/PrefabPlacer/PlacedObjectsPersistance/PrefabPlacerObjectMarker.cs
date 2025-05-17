@@ -10,7 +10,7 @@ public class PrefabPlacerObjectMarker : MonoBehaviour
     public ProfilePlacedObjectsTrackerSO trackingSO;
     public string uniqueID;
 
-
+    private const float BOUNDS_SPHERE_RADIUS = 0.3f;
 
     private void OnDestroy()
     {
@@ -20,22 +20,10 @@ public class PrefabPlacerObjectMarker : MonoBehaviour
             EditorUtility.SetDirty(trackingSO); // save the SO so this actually persists
         }
     }
-}
-
-
-public class PrefabPlacerObjectBoundsDefinition : MonoBehaviour
-{
-
-    public Mesh meshToUseForBounds;
-    public float boundsSphereRadius;
 
     public Bounds GetBounds()
     {
-        if (meshToUseForBounds == null)
-        {
-            return new Bounds(transform.position, new Vector3(boundsSphereRadius, boundsSphereRadius, boundsSphereRadius));
-        }
-        return meshToUseForBounds.bounds; 
+        return new Bounds(transform.position, new Vector3(BOUNDS_SPHERE_RADIUS, BOUNDS_SPHERE_RADIUS, BOUNDS_SPHERE_RADIUS));
     }
 }
 

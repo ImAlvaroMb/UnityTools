@@ -22,4 +22,16 @@ public class ProfilePlacedObjectsTrackerSO : ScriptableObject
     {
         return placedPrefabs.Exists(p => p.UniqueID == id);
     }
+
+    public PrefabPlacerObjectMarker[] GetMarkersArray()
+    {
+        PrefabPlacerObjectMarker[] markers = new PrefabPlacerObjectMarker[placedPrefabs.Count];
+
+        for(int i = 0; i < placedPrefabs.Count; i++)
+        {
+            markers[i] = placedPrefabs[i].prefab.GetComponent<PrefabPlacerObjectMarker>();
+        }
+
+        return markers;
+    }
 }

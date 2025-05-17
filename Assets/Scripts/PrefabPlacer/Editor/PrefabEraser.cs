@@ -64,16 +64,7 @@ public class PrefabEraser : IPrefabPlacerMode
 
         Collider[] hitColliders = Physics.OverlapSphere(position, eraserRadius);
         Bounds eraserBounds = new Bounds(position, new Vector3(eraserRadius, eraserRadius, eraserRadius));
-        List<PrefabPlacerObjectBoundsDefinition> list = new List<PrefabPlacerObjectBoundsDefinition>();
-        for (int i = 0; i < list.Count; i++)
-        {
-            if (list[i].GetBounds().Intersects(eraserBounds))
-            {
-
-            }
-        }
-
-        List<GameObject> objectsToRemove = new List<GameObject>();
+        HashSet<GameObject> objectsToRemove = new HashSet<GameObject>();
 
         foreach (var hit in hitColliders)
         {
@@ -85,6 +76,19 @@ public class PrefabEraser : IPrefabPlacerMode
                 }
             }
         }
+
+        PrefabPlacerObjectMarker[] profileMarkers = activeTrackerSO.GetMarkersArray();
+        foreach (PrefabPlacerObjectMarker marker in profileMarkers)
+        {
+            if (marker == null || objectsToRemove.Contains(marker.gameObject)) continue;
+
+            if(activeTrackerSO.ContainsByUniqueID(marker.uniqueID) && eraserBounds.Intersects(marker.GetBounds()))
+            {
+                objectsToRemove.Add(marker.gameObject);
+            }
+        }
+
+
 
         foreach (var obj in objectsToRemove)
         {
