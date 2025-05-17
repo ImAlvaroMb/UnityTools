@@ -181,12 +181,12 @@ public class CarController : MonoBehaviour
                 isDashing = false;
             }, (progress) => {
                 carRb.AddForce(dashDirection * dashForce, ForceMode.Impulse);
-                Vector3 clampedVelocity = carRb.velocity;//get current speed
+                Vector3 clampedVelocity = carRb.linearVelocity;//get current speed
 
                 if(clampedVelocity.magnitude > maxRbVelocityWhileDashing)
                 {
                     clampedVelocity = clampedVelocity.normalized * maxRbVelocityWhileDashing;//retain direction (normalize) & scale it down to then apply it to rbvelocirty
-                    carRb.velocity = clampedVelocity;
+                    carRb.linearVelocity = clampedVelocity;
                 }
 
             }, "dash", false, false);
@@ -231,7 +231,7 @@ public class CarController : MonoBehaviour
             case SteeringMode.RearWheel:
                 //rear wheels only
                 float rearSteerAngle = currentSteerAngle;
-                if (carRb.velocity.magnitude < 10f) 
+                if (carRb.linearVelocity.magnitude < 10f) 
                 {
                     rearSteerAngle = -currentSteerAngle; //opositre direction when on lowSpeed
                 }
@@ -252,7 +252,7 @@ public class CarController : MonoBehaviour
     {
         //calculate the downward force based on steering input and speed
         float steeringInput = Mathf.Abs(Input.GetAxis("Horizontal"));
-        float speedFactor = carRb.velocity.magnitude * speedDownwardForceMultiplier; //speed-based factor
+        float speedFactor = carRb.linearVelocity.magnitude * speedDownwardForceMultiplier; //speed-based factor
         float downwardForce = baseDownwardForce + (steeringInput * turnDownwardForceMultiplier * speedFactor);
 
         //apply the downward force to the car's Rigidbody
@@ -287,7 +287,7 @@ public class CarController : MonoBehaviour
 
     private void UpdateSpeedText()
     {
-        float speedZ = Mathf.Abs(carRb.velocity.z);
+        float speedZ = Mathf.Abs(carRb.linearVelocity.z);
         float speedKmh = speedZ * 3.6f;
         speedText.text = "Speed: " + speedKmh.ToString("F1") + " km/h";
     }
