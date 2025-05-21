@@ -296,15 +296,22 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
                 {
                     DragAndDrop.AcceptDrag();
 
+                    float progress;
+                    float count = 0;
                     foreach (Object draggedObject in DragAndDrop.objectReferences)
                     {
                         string path = AssetDatabase.GetAssetPath(draggedObject);
+                        progress = (float) count / DragAndDrop.objectReferences.Length;
+                        EditorUtility.DisplayProgressBar("Addings prefabs...", $"Addings prefab {path}", progress);
 
                         if (PrefabUtility.GetPrefabAssetType(draggedObject) != PrefabAssetType.NotAPrefab)
                         {
                             PrefabProfileManager.AddPrefabToProfile(profileNames[selectedProfileIndex], path);
                         }
+                        count++;
                     }
+
+                    EditorUtility.ClearProgressBar();
 
                     RefreshPrefabs();
                 }
@@ -418,19 +425,22 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
             }
 
             int addedCount = 0;
+            float progress;
+
 
             foreach (string filePath in allFiles)
             {
                 // Normalize path to Unity format
-                string relativePath = "Assets" + filePath.Substring(Application.dataPath.Length)
-                                       .Replace('\\', '/'); // Convert backslashes to forward slashe
-
+                string relativePath = "Assets" + filePath.Substring(Application.dataPath.Length).Replace('\\', '/'); // Convert backslashes to forward slashe
+                progress = (float) addedCount / allFiles.Length;
+                EditorUtility.DisplayProgressBar("Adding prefabs...", $"Processing {relativePath}", progress);
                 PrefabProfileManager.AddPrefabToProfile(
                     profileNames[selectedProfileIndex],
                     relativePath);
 
                 addedCount++;
             }
+            EditorUtility.ClearProgressBar(); // ALWAYS CLEAR PROGRESS BAR!!!
 
             RefreshPrefabs();
             EditorUtility.DisplayDialog("Prefabs Added",

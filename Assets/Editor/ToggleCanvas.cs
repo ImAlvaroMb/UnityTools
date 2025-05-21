@@ -6,7 +6,7 @@ public class ToggleCanvas : EditorWindow
     [MenuItem("Tools/Toggle Canvas")]
     public static void ToggleVolume()
     {
-        Canvas[] canvas = FindObjectsOfType<Canvas>(true);
+        Canvas[] canvas = FindObjectsByType<Canvas>(FindObjectsSortMode.None);
 
         foreach (Canvas obj in canvas)
         {

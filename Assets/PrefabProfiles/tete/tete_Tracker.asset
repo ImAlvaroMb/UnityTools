@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 85cc0911844f7174a90768807f64bca5, type: 3}
-  m_Name: NewProfile_Tracker
+  m_Name: tete_Tracker
   m_EditorClassIdentifier: 
   placedPrefabs: []

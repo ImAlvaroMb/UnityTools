@@ -1,3 +1,12 @@
+Assets/SimpleLowPolyNature/Prefabs/Mushroom1.prefab
+Assets/SimpleLowPolyNature/Prefabs/Mushroom2.prefab
+Assets/SimpleLowPolyNature/Prefabs/Mushroom3.prefab
+Assets/SimpleLowPolyNature/Prefabs/MushroomLarge.prefab
+Assets/SimpleLowPolyNature/Prefabs/Paddle.prefab
+Assets/SimpleLowPolyNature/Prefabs/PlantEx1.prefab
+Assets/SimpleLowPolyNature/Prefabs/PlantEx2.prefab
+Assets/SimpleLowPolyNature/Prefabs/PlantEx3.prefab
+Assets/SimpleLowPolyNature/Prefabs/PlantEx4.prefab
 Assets/SimpleLowPolyNature/Prefabs/Rock1.prefab
 Assets/SimpleLowPolyNature/Prefabs/Rock2.prefab
 Assets/SimpleLowPolyNature/Prefabs/Rock3.prefab
@@ -9,5 +18,3 @@ Assets/SimpleLowPolyNature/Prefabs/Rock8.prefab
 Assets/SimpleLowPolyNature/Prefabs/Rock9.prefab
 Assets/SimpleLowPolyNature/Prefabs/Rock10.prefab
 Assets/SimpleLowPolyNature/Prefabs/Rock11.prefab
-Assets/SimpleLowPolyNature/Prefabs/Rock12.prefab
-Assets/SimpleLowPolyNature/Prefabs/Mushroom2.prefab
