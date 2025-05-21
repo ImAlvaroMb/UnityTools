@@ -3,7 +3,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-public class PrefabPlacer : MonoBehaviour, IPrefabPlacerMode //handles scene interaction (user inputs by keyboard) and preview placement 
+public class PrefabModeSinglePlacer : MonoBehaviour, IPrefabPlacerMode //handles scene interaction (user inputs by keyboard) and preview placement 
 {
     private GameObject previewInstance;
     private GameObject targetPrefab;

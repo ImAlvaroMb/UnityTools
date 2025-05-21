@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class PrefabEraser : MonoBehaviour , IPrefabPlacerMode
+public class PrefabModeEraser : MonoBehaviour , IPrefabPlacerMode
 {
     private ProfilePlacedObjectsTrackerSO activeTrackerSO;
     public float eraserRadius;

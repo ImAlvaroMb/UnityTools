@@ -12,8 +12,8 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
     private List<GameObject> prefabs;
     private int selectedPrefabIndex = 0;
     private Vector2 scrollPosition;
-    private PrefabPlacer placer = new PrefabPlacer();
-    private PrefabEraser eraser = new PrefabEraser();
+    private PrefabModeSinglePlacer placer = new PrefabModeSinglePlacer();
+    private PrefabModeEraser eraser = new PrefabModeEraser();
     public ProfilePlacedObjectsTrackerSO activeTracker;
 
     // MODES
@@ -471,4 +471,16 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
             placer.StartPlacing(prefabs[selectedPrefabIndex], activeTracker);
         }
     }
+
+    #region UTILITIES
+
+    private void StopAllToolModes()
+    {
+        foreach(var mode in modeHandlers)
+        {
+            mode.Value.OnModeDeactivated();
+        }
+    }
+
+    #endregion
 }
