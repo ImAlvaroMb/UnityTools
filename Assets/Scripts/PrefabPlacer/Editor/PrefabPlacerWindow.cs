@@ -7,26 +7,32 @@ using UnityEngine;
 
 public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on the editor window) 
 {
+
+    // GENERAL VARIABLES
     private string[] profileNames;
     private int selectedProfileIndex = 0;
-    private List<GameObject> prefabs;
-    private int selectedPrefabIndex = 0;
     private Vector2 scrollPosition;
     private PrefabModeSinglePlacer placer = new PrefabModeSinglePlacer();
     private PrefabModeEraser eraser = new PrefabModeEraser();
     public ProfilePlacedObjectsTrackerSO activeTracker;
+    private List<GameObject> prefabs;
 
     // MODES
-    private ToolMode currentToolMode = ToolMode.Place;
+    private ToolMode currentToolMode = ToolMode.SinglePlace;
     private ToolMode previousToolMode = ToolMode.Erase;
     private enum ToolMode
     {
-        Place,
-        Erase
+        SinglePlace,
+        Erase,
+        MultiplePlace
     }
     private Dictionary<ToolMode, IPrefabPlacerMode> modeHandlers;
     private float eraserRadius = 2f;
 
+    //PREFAB SELECTION
+    private int selectedPrefabIndex = 0;
+    private bool canSelectMultiplePrefabIndex = false;
+    private List<int> selectedPrefabIndexList; 
     [Header("Constants")]
     private const float MIN_WINDOW_HEIGHT = 350f;
     private const float MIN_WINDOW_WIDTH = 400f;
@@ -59,7 +65,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
     {
         modeHandlers = new Dictionary<ToolMode, IPrefabPlacerMode>
         {
-            { ToolMode.Place, placer},
+            { ToolMode.SinglePlace, placer},
             { ToolMode.Erase, eraser}
         };
     }
@@ -218,27 +224,27 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
     private void DrawToolModeSettings()
     {
-        //if(currentToolMode != previousToolMode)
-        //{
-        //    modeHandlers[previousToolMode].OnModeDeactivated();
-        //    modeHandlers[currentToolMode].OnModeActivated(activeTracker);
-
-        //    previousToolMode = currentToolMode;
-        //}
+        
+        StopAllToolModes();
         switch (currentToolMode)
         {
-            case ToolMode.Place:
-                eraser.StopErasing();
+            case ToolMode.SinglePlace:
+                //eraser.StopErasing();
                 DrawPrefabSelection();
                 break;
 
             case ToolMode.Erase:
-                placer.StopPlacing();
+                //placer.StopPlacing();
                 DrawEraseSettings();
+                break;
+
+            case ToolMode.MultiplePlace:
+
                 break;
         }
     }
 
+    #region Erase Mode
     private void DrawEraseSettings()
     {
         EditorGUILayout.LabelField("Eraser Settings", EditorStyles.boldLabel);
@@ -247,6 +253,9 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         eraser.StartErasing(activeTracker);
     }
 
+    #endregion
+
+    #region Prefab list & handeling
     private void DrawPrefabSelection()//prefab painting handler
     {
         DetectPrefabDrop();
@@ -360,6 +369,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         EditorGUILayout.EndHorizontal();
     }
 
+    #endregion
     private void ShowProfileCreationDialog()
     {
         string path = EditorUtility.SaveFilePanelInProject(
