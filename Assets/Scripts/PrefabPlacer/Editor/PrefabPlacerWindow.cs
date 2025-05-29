@@ -230,6 +230,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         {
             case ToolMode.SinglePlace:
                 //eraser.StopErasing();
+                canSelectMultiplePrefabIndex = false;
                 DrawPrefabSelection();
                 break;
 
@@ -239,7 +240,8 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
                 break;
 
             case ToolMode.MultiplePlace:
-
+                canSelectMultiplePrefabIndex = true;
+                // need to manually draw each prefab thumbnail to treat it as either a button or a toggle, since a selection grid doesnt support multiple selections
                 break;
         }
     }
@@ -255,6 +257,11 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
     #endregion
 
+    #region Multiple Prefab Placing
+
+
+
+    #endregion
     #region Prefab list & handeling
     private void DrawPrefabSelection()//prefab painting handler
     {
