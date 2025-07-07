@@ -12,4 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85cc0911844f7174a90768807f64bca5, type: 3}
   m_Name: sotesting_Tracker
   m_EditorClassIdentifier: 
-  placedPrefabs: []
+  placedPrefabs:
+  - UniqueID: e6ef6863-156b-4beb-9671-44705d1c201d
+    prefab: {fileID: 0}
+    position: {x: 14.972222, y: 2.7208962, z: -29.85177}
+    rotation: {x: 0.22279876, y: 0, z: 0, w: 0.9748645}
+    scale: {x: 1, y: 1, z: 1}
+  - UniqueID: f3b3277a-bcfa-44eb-a906-0631a5640e78
+    prefab: {fileID: 0}
+    position: {x: -9.320475, y: 3.876121e-16, z: -17.456495}
+    rotation: {x: 0, y: 0.24418028, z: 0, w: 0.96972984}
+    scale: {x: 1, y: 1, z: 1}
+  - UniqueID: d0a1e884-6ce8-4fa3-8937-4b30e6143057
+    prefab: {fileID: 0}
+    position: {x: -23.54145, y: 2.9969347e-16, z: -13.496992}
+    rotation: {x: 0, y: 0.26607093, z: 0, w: 0.96395344}
+    scale: {x: 1, y: 1, z: 1}
