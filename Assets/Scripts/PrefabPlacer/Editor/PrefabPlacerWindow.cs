@@ -32,7 +32,13 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
     //PREFAB SELECTION
     private int selectedPrefabIndex = 0;
     private bool canSelectMultiplePrefabIndex = false;
-    private List<int> selectedPrefabIndexList; 
+    private List<int> selectedPrefabIndexList = new List<int>();
+
+    private const float PREFAB_BUTTON_WIDTH = 110f;
+    private const float PREFAB_BUTTON_HEIGHT = 100f;
+    private const float PREFAB_PADDING = 10f;
+    private Color highlightColor = new Color(0.5f, 0.7f, 1f);
+
     [Header("Constants")]
     private const float MIN_WINDOW_HEIGHT = 350f;
     private const float MIN_WINDOW_WIDTH = 400f;
@@ -241,6 +247,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
             case ToolMode.MultiplePlace:
                 canSelectMultiplePrefabIndex = true;
+                DrawMultiplePrefabSelection();
                 // need to manually draw each prefab thumbnail to treat it as either a button or a toggle, since a selection grid doesnt support multiple selections
                 break;
         }
@@ -259,6 +266,134 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
     #region Multiple Prefab Placing
 
+    private void DrawMultiplePrefabSelection()
+    {
+        if (prefabs == null || prefabs.Count == 0)
+        {
+            return; // Should be handled by the calling method (DrawPrefabListAndControls)
+        }
+
+        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+
+        // Calculate columns based on current view width
+        int columns = Mathf.Max(1, Mathf.FloorToInt((EditorGUIUtility.currentViewWidth - 20f) / (PREFAB_BUTTON_WIDTH + PREFAB_PADDING))); // -20 for potential scrollbar
+
+        GUIContent[] thumbnails = GetPrefabThumbnails(); // Your existing method to get thumbnails
+        bool selectionChanged = false;
+
+        // Manual grid layout
+        int totalRows = Mathf.CeilToInt((float)prefabs.Count / columns);
+        float gridHeight = totalRows * (PREFAB_BUTTON_HEIGHT + PREFAB_PADDING);
+        Rect gridRect = GUILayoutUtility.GetRect(0, EditorGUIUtility.currentViewWidth - 20f, gridHeight, gridHeight);
+
+        Event currentEvent = Event.current; // Cache current event
+
+        for (int i = 0; i < prefabs.Count; i++)
+        {
+            int row = i / columns;
+            int col = i % columns;
+
+            Rect buttonRect = new Rect(
+                gridRect.x + col * (PREFAB_BUTTON_WIDTH + PREFAB_PADDING) + (PREFAB_PADDING / 2f), // Add some padding at the start
+                gridRect.y + row * (PREFAB_BUTTON_HEIGHT + PREFAB_PADDING) + (PREFAB_PADDING / 2f),
+                PREFAB_BUTTON_WIDTH,
+                PREFAB_BUTTON_HEIGHT
+            );
+
+            Color originalBackgroundColor = GUI.backgroundColor;
+            bool isCurrentlySelected = false;
+
+            if (canSelectMultiplePrefabIndex)
+            {
+                isCurrentlySelected = selectedPrefabIndexList.Contains(i);
+            }
+            else
+            {
+                isCurrentlySelected = (selectedPrefabIndex == i);
+            }
+
+            if (isCurrentlySelected)
+            {
+                GUI.backgroundColor = highlightColor; // Use your defined highlight color
+            }
+
+            if (GUI.Button(buttonRect, thumbnails[i]))
+            {
+                selectionChanged = true;
+                if (canSelectMultiplePrefabIndex)
+                {
+                    if (currentEvent.control || currentEvent.command) // Ctrl/Cmd click for toggle
+                    {
+                        if (isCurrentlySelected)
+                        {
+                            selectedPrefabIndexList.Remove(i);
+                        }
+                        else
+                        {
+                            selectedPrefabIndexList.Add(i);
+                        }
+                    }
+                    else if (currentEvent.shift && selectedPrefabIndexList.Count > 0) // Shift click for range
+                    {
+                        // Basic range selection: from the last selected item to the current one.
+                        // More sophisticated range selection (e.g., using a persistent anchor) can be implemented if needed.
+                        int anchorIndex = selectedPrefabIndexList.Last(); // Use the most recently added item as anchor
+                        int start = Mathf.Min(anchorIndex, i);
+                        int end = Mathf.Max(anchorIndex, i);
+                        for (int j = start; j <= end; j++)
+                        {
+                            if (!selectedPrefabIndexList.Contains(j))
+                            {
+                                selectedPrefabIndexList.Add(j);
+                            }
+                        }
+                    }
+                    else // Normal click in multi-select mode
+                    {
+                        // If already selected and it's not the only one, or if not selected at all
+                        if (!isCurrentlySelected || selectedPrefabIndexList.Count > 1)
+                        {
+                            selectedPrefabIndexList.Clear();
+                            selectedPrefabIndexList.Add(i);
+                        }
+                        else // Clicking the only selected item (already in the list)
+                        {
+                            selectedPrefabIndexList.Remove(i); // Deselect it
+                        }
+                    }
+                }
+                else // Single selection mode
+                {
+                    if (selectedPrefabIndex == i && !currentEvent.control && !currentEvent.command && !currentEvent.shift)
+                    {
+                        // Optional: Clicking the selected item again could deselect it in single mode,
+                        // or do nothing. For now, it just re-selects and triggers placement.
+                        // If you want deselection: selectedPrefabIndex = -1; (and handle -1 appropriately)
+                    }
+                    selectedPrefabIndex = i; // Set the single selected index
+                }
+            }
+            GUI.backgroundColor = originalBackgroundColor; // Restore original color
+        }
+
+        EditorGUILayout.EndScrollView();
+
+        if (selectionChanged)
+        {
+            if (canSelectMultiplePrefabIndex)
+            {
+                // Notify that the list of selected prefabs has changed.
+                // Your MultiplePlace mode handler would then use 'selectedPrefabIndexList'.
+                Debug.Log("Multiple prefab selection changed. Count: " + selectedPrefabIndexList.Count + ". Indices: " + string.Join(", ", selectedPrefabIndexList));
+                StartPlacingSelectedPrefabsList(); // Call a method to handle the updated list
+            }
+            else
+            {
+                StartPlacingSelectedPrefab(); // Your existing method for single prefab placement
+            }
+            Repaint(); // Redraw the window to show selection changes
+        }
+    }
 
 
     #endregion
@@ -486,6 +621,27 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         {
             placer.StopPlacing();
             placer.StartPlacing(prefabs[selectedPrefabIndex], activeTracker);
+        }
+    }
+
+    private void StartPlacingSelectedPrefabsList()
+    {
+        if (currentToolMode == ToolMode.MultiplePlace)
+        {
+            // This method would typically inform your IPrefabPlacerMode for multiple prefabs
+            // that the selection has changed and it should act accordingly.
+            // For example, it might grab the selected GameObjects:
+            // List<GameObject> currentlySelectedGameObjects = new List<GameObject>();
+            // foreach (int index in selectedPrefabIndexList)
+            // {
+            //     if (index >= 0 && index < prefabs.Count)
+            //     {
+            //         currentlySelectedGameObjects.Add(prefabs[index]);
+            //     }
+            // }
+            // (modeHandlers[ToolMode.MultiplePlace] as YourMultiplePlacerClass)?.UpdateSelection(currentlySelectedGameObjects);
+
+            Debug.Log($"Ready to place {selectedPrefabIndexList.Count} prefabs. Implement placement logic in your MultiplePlace mode handler.");
         }
     }
 
