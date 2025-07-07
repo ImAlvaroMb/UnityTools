@@ -496,8 +496,23 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
     private GUIContent[] GetPrefabThumbnails()//get prefab preview images
     {
-        return prefabs.ConvertAll(prefab =>
-            new GUIContent(AssetPreview.GetAssetPreview(prefab), prefab.name)).ToArray();
+        if (prefabs == null) return new GUIContent[0];
+
+        GUIContent[] thumbnails = new GUIContent[prefabs.Count];
+        for (int i = 0; i < prefabs.Count; i++)
+        {
+            if (prefabs[i] != null)
+            {
+                Texture2D preview = AssetPreview.GetAssetPreview(prefabs[i]);
+                // Tooltip will show prefab name. Image is the preview.
+                thumbnails[i] = new GUIContent(preview, prefabs[i].name);
+            }
+            else
+            {
+                thumbnails[i] = new GUIContent("Missing Prefab " + i); // Placeholder for missing prefabs
+            }
+        }
+        return thumbnails;
     }
 
     private void DrawPrefabControls()
