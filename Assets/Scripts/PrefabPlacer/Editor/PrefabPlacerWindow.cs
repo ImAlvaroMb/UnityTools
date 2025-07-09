@@ -283,7 +283,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
     private void DrawEraseSettings()
     {
         EditorGUILayout.LabelField("Eraser Settings", EditorStyles.boldLabel);
-        eraserRadius = EditorGUILayout.Slider("Eraser Radius", eraserRadius, 0.1f, 10f);
+        eraserRadius = EditorGUILayout.Slider("Eraser Radius", eraserRadius, 0.1f, 50f);
         eraser.eraserRadius = eraserRadius;
         eraser.StartErasing(activeTracker);
     }
@@ -321,8 +321,8 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
     private void DrawMutiplePlacingSettings()
     {
         EditorGUILayout.LabelField("Mutiple Placing Settings", EditorStyles.boldLabel);
-        multiplePlacingDensity = EditorGUILayout.Slider("Placing Density", multiplePlacingDensity, 0.1f, 10f);
-        multiplePlacingRadius = EditorGUILayout.Slider("Placing Radius", multiplePlacingRadius, 0.1f, 10f);
+        multiplePlacingDensity = EditorGUILayout.Slider("Placing Density", multiplePlacingDensity, 0.1f, 50f);
+        multiplePlacingRadius = EditorGUILayout.Slider("Placing Radius", multiplePlacingRadius, 0.1f, 50f);
 
         multiplePlacer.scaleValues = SettingsRandomScale("Scalings", multiplePlacer.scaleValues);
         multiplePlacer.placingRadius = multiplePlacingRadius;

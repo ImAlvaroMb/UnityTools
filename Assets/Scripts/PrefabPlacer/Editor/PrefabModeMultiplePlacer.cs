@@ -12,6 +12,7 @@ public class PrefabModeMultiplePlacer : MonoBehaviour, IPrefabPlacerMode
     public float placingRadius;
     public float density;
     public Vector2 scaleValues = Vector2.one;
+    public float placingSeparation; // used to generate an area on each spawned object to not overlap other spawn pouints
 
     public void OnModeActivated(ProfilePlacedObjectsTrackerSO trackerSO)
     {
