@@ -70,6 +70,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         SaveSelectedProfile();
         placer.StopPlacing();
         eraser.StopErasing();
+        multiplePlacer.StopPlacing();
     }
 
     private void InitializeModeDictionary()
