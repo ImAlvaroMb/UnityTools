@@ -58,6 +58,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
         EditorApplication.projectChanged += RefreshProfiles;
         InitializeModeDictionary();
+        previousToolMode = currentToolMode;
         RefreshProfiles();
         LoadSelectedProfile();
         ValidateProfileSelection();
@@ -236,7 +237,21 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
     private void DrawToolModeSettings()
     {
         
-        StopAllToolModes();
+        if(currentToolMode != previousToolMode)
+        {
+            if(modeHandlers.TryGetValue(previousToolMode, out IPrefabPlacerMode oldMode))
+            {
+                oldMode.OnModeDeactivated();
+            }
+
+            if(modeHandlers.TryGetValue(currentToolMode, out IPrefabPlacerMode newMode))
+            {
+                newMode.OnModeActivated(activeTracker);
+            }
+
+            previousToolMode = currentToolMode;
+        }
+        //StopAllToolModes();
         switch (currentToolMode)
         {
             case ToolMode.SinglePlace:
@@ -252,6 +267,11 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
             case ToolMode.MultiplePlace:
                 canSelectMultiplePrefabIndex = true;
+                List<GameObject> selectedObjects = selectedPrefabIndexList
+                .Where(index => index >= 0 && index < prefabs.Count)
+                .Select(index => prefabs[index])
+                .ToList();
+                multiplePlacer.UpdatePrefabSelection(selectedObjects, activeTracker);
                 DrawMutiplePlacingSettings();
                 // need to manually draw each prefab thumbnail to treat it as either a button or a toggle, since a selection grid doesnt support multiple selections
                 break;
@@ -648,18 +668,11 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
     private void StartPlacingSelectedPrefabsList()
     {
-        
-            List<GameObject> currentlySelectedGameObjects = new List<GameObject>();
-            foreach (int index in selectedPrefabIndexList)
-            {
-                if(index >= 0 && index < prefabs.Count)
-                {
-                    currentlySelectedGameObjects.Add(prefabs[index]);
-                }
-            }
-            multiplePlacer.StartPlacing(currentlySelectedGameObjects, activeTracker);
-            Debug.Log($"Ready to place {selectedPrefabIndexList.Count} prefabs. Implement placement logic in your MultiplePlace mode handler.");
-        
+        List<GameObject> selectedObjects = selectedPrefabIndexList
+            .Where(index => index >= 0 && index < prefabs.Count)
+            .Select(index => prefabs[index])
+            .ToList();
+        multiplePlacer.UpdatePrefabSelection(selectedObjects, activeTracker);
     }
 
     #region UTILITIES

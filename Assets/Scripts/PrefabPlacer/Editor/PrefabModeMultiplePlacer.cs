@@ -15,6 +15,7 @@ public class PrefabModeMultiplePlacer : MonoBehaviour, IPrefabPlacerMode
     {
         activeTrackerSO = trackerSO;
         isPlacing = true;
+        SceneView.duringSceneGui += OnSceneGUI;
     }
 
     public void OnModeDeactivated()
@@ -36,8 +37,18 @@ public class PrefabModeMultiplePlacer : MonoBehaviour, IPrefabPlacerMode
 
     public void StopPlacing()
     {
-        isPlacing = false;
-        SceneView.duringSceneGui -= OnSceneGUI;
+        
+    }
+
+    public void UpdatePrefabSelection(List<GameObject> prefabs, ProfilePlacedObjectsTrackerSO trackerSO)
+    {
+        if(prefabs == null)
+        {
+            targetPrefabsList.Clear();
+            return;
+        }
+        activeTrackerSO = trackerSO; 
+        targetPrefabsList = prefabs;
     }
 
     private void OnSceneGUI(SceneView sceneView)

@@ -14,7 +14,6 @@ public class PrefabModeEraser : MonoBehaviour , IPrefabPlacerMode
         activeTrackerSO = trackerSO;
         isErasing = true;
         doLogic = true;
-        SceneView.duringSceneGui += OnSceneGUI;
     }
 
     public void OnModeDeactivated()
