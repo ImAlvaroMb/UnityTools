@@ -471,6 +471,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
             
         }
         EditorGUILayout.EndHorizontal();
+        //placer.scaleValues = SettingsRandomScale("Scale settings", placer.scaleValues);
 
         if (prefabs.Count > 0)
         {

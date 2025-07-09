@@ -104,6 +104,7 @@ public class PrefabModeSinglePlacer : MonoBehaviour, IPrefabPlacerMode //handles
             //ProfilePlacedObjectsTrackerSO trackerSO = //PrefabPlacerWindow.
             Undo.RegisterCreatedObjectUndo(instance, $"Placed prefab '{instance.name}' by prefab placer tool"); // register the action to the undo history
             instance.transform.SetPositionAndRotation(previewInstance.transform.position, previewInstance.transform.rotation);
+            instance.transform.localScale = Vector3.one * UnityEngine.Random.Range(scaleValues.x, scaleValues.y);
 
             var marker = instance.AddComponent<PrefabPlacerObjectMarker>();
             marker.trackingSO = activeTrackerSO;
