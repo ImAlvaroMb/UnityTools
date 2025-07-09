@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using System;
+using Unity.Mathematics;
 
 public class PrefabModeMultiplePlacer : MonoBehaviour, IPrefabPlacerMode
 {
@@ -10,6 +11,7 @@ public class PrefabModeMultiplePlacer : MonoBehaviour, IPrefabPlacerMode
     private List<GameObject> targetPrefabsList = new List<GameObject>();
     public float placingRadius;
     public float density;
+    public Vector2 scaleValues = Vector2.one;
 
     public void OnModeActivated(ProfilePlacedObjectsTrackerSO trackerSO)
     {
@@ -115,6 +117,7 @@ public class PrefabModeMultiplePlacer : MonoBehaviour, IPrefabPlacerMode
             GameObject newObject = (GameObject)PrefabUtility.InstantiatePrefab(prefabToPlace);
             newObject.transform.position = spawnPosition;
             newObject.transform.rotation = spawnRotation;
+            newObject.transform.localScale = Vector3.one * UnityEngine.Random.Range(scaleValues.x, scaleValues.y);
 
             Undo.RegisterCreatedObjectUndo(newObject, "Place Multiple Prefabs");
 

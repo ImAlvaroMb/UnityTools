@@ -9,6 +9,7 @@ public class PrefabModeSinglePlacer : MonoBehaviour, IPrefabPlacerMode //handles
     private GameObject targetPrefab;
     private bool isPlacing;
     private ProfilePlacedObjectsTrackerSO activeTrackerSO;
+    public Vector2 scaleValues = Vector2.one;
 
     public void OnModeActivated(ProfilePlacedObjectsTrackerSO trackerSO)
     {
@@ -119,7 +120,7 @@ public class PrefabModeSinglePlacer : MonoBehaviour, IPrefabPlacerMode //handles
 
             EditorUtility.SetDirty(activeTrackerSO);
         }
-        StopPlacing();
+        //StopPlacing();
     }
 
     

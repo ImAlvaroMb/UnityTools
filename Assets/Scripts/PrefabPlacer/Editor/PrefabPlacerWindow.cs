@@ -292,6 +292,31 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
     #region Multiple Prefab Placing
 
+    private Vector2 SettingsRandomScale(string label, Vector2 currentValues)
+    {
+        float minVal = currentValues.x;
+        float maxVal = currentValues.y;
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField(label, GUILayout.Width(EditorGUIUtility.labelWidth - 100));
+
+        EditorGUILayout.LabelField("Min", GUILayout.Width(30));
+        minVal = EditorGUILayout.FloatField(minVal, GUILayout.Width(50));   
+        
+        EditorGUILayout.LabelField("Max", GUILayout.Width(30));
+        maxVal = EditorGUILayout.FloatField(maxVal, GUILayout.Width(50));
+
+        EditorGUILayout.EndHorizontal();
+
+        minVal = Mathf.Max(0.01f, minVal);
+        maxVal = Mathf.Max(0.01f, maxVal);
+        if(minVal > maxVal)
+        {
+            maxVal = minVal;
+        }
+
+        return new Vector2(minVal, maxVal);
+    }
 
     private void DrawMutiplePlacingSettings()
     {
@@ -299,6 +324,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         multiplePlacingDensity = EditorGUILayout.Slider("Placing Density", multiplePlacingDensity, 0.1f, 10f);
         multiplePlacingRadius = EditorGUILayout.Slider("Placing Radius", multiplePlacingRadius, 0.1f, 10f);
 
+        multiplePlacer.scaleValues = SettingsRandomScale("Scalings", multiplePlacer.scaleValues);
         multiplePlacer.placingRadius = multiplePlacingRadius;
         multiplePlacer.density = multiplePlacingDensity;
 
