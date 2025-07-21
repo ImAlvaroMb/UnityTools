@@ -32,6 +32,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
     private float multiplePlacingRadius = 2f;
     private float multiplePlacingDensity = 1f;
+    private float multiplePlacingSeparation = 1f;
 
     //PREFAB SELECTION
     private int selectedPrefabIndex = 0;
@@ -323,10 +324,12 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         EditorGUILayout.LabelField("Mutiple Placing Settings", EditorStyles.boldLabel);
         multiplePlacingDensity = EditorGUILayout.Slider("Placing Density", multiplePlacingDensity, 0.1f, 50f);
         multiplePlacingRadius = EditorGUILayout.Slider("Placing Radius", multiplePlacingRadius, 0.1f, 50f);
+        multiplePlacingSeparation = EditorGUILayout.Slider("Placing Spacing", multiplePlacingSeparation, 0.1f, 50f);
 
         multiplePlacer.scaleValues = SettingsRandomScale("Scalings", multiplePlacer.scaleValues);
         multiplePlacer.placingRadius = multiplePlacingRadius;
         multiplePlacer.density = multiplePlacingDensity;
+        multiplePlacer.placingSeparation = multiplePlacingSeparation;
 
         DrawMultiplePrefabSelection();
     }
