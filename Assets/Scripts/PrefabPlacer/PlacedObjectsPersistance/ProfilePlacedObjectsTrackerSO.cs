@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ProfilePlacedObjectsTracker", menuName = "Tools/PrefabPlacer/ProfilePlacedObjectsTracker")]
@@ -27,11 +28,12 @@ public class ProfilePlacedObjectsTrackerSO : ScriptableObject
     {
         PrefabPlacerObjectMarker[] markers = new PrefabPlacerObjectMarker[placedPrefabs.Count];
 
-        for(int i = 0; i < placedPrefabs.Count; i++)
-        {
-            markers[i] = placedPrefabs[i].prefab.GetComponent<PrefabPlacerObjectMarker>();
-        }
+        //for(int i = 0; i < placedPrefabs.Count; i++)
+        //{
+        //    markers[i] = placedPrefabs[i].prefab.GetComponent<PrefabPlacerObjectMarker>();
+        //}
 
-        return markers;
+        return placedPrefabs.Where(obj => obj != null)
+            .Select(obj => obj.prefab.GetComponent<PrefabPlacerObjectMarker>()).ToArray();
     }
 }

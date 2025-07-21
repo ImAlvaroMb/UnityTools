@@ -13,88 +13,33 @@ MonoBehaviour:
   m_Name: sotesting_Tracker
   m_EditorClassIdentifier: 
   placedPrefabs:
-  - UniqueID: 0ab1ec5a-24bd-411c-9f04-8fd87d5b73c2
+  - UniqueID: 55e6468a-8853-442a-a276-249047c5407c
     prefab: {fileID: 0}
-    position: {x: 10.000201, y: 2.2656198, z: -28.907757}
-    rotation: {x: -0.21912949, y: 0.17619675, z: 0.040268596, w: -0.9588094}
+    position: {x: -9.335531, y: 1.83518e-16, z: -8.2649145}
+    rotation: {x: 0, y: 0.9514298, z: 0, w: 0.30786586}
     scale: {x: 1, y: 1, z: 1}
-  - UniqueID: ac7c52ac-cca5-4f81-a0c2-878848d88af3
+  - UniqueID: acfd341b-d8a0-4b96-9b8c-ea45e9f7c710
     prefab: {fileID: 0}
-    position: {x: 3.439834, y: 4.502719e-16, z: -20.278444}
-    rotation: {x: 0, y: 0.9996631, z: 0, w: 0.025954269}
+    position: {x: -11.100222, y: 2.9848282e-16, z: -13.442472}
+    rotation: {x: 0, y: 0.020973487, z: 0, w: -0.99978006}
     scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 09c659b0-1388-410d-89fd-c83b5fdc7c54
+  - UniqueID: e42b7e29-c32b-4f9d-93ac-8c62da63df58
     prefab: {fileID: 0}
-    position: {x: 0.18578126, y: 4.3139613e-16, z: -19.428356}
-    rotation: {x: 0, y: 0.9354904, z: 0, w: 0.35335204}
+    position: {x: -7.539793, y: 1.9455608e-16, z: -8.762027}
+    rotation: {x: 0, y: 0.9045251, z: 0, w: -0.42642042}
     scale: {x: 1, y: 1, z: 1}
-  - UniqueID: db5a6891-f2bc-4f8a-b886-10280ef40704
+  - UniqueID: 7cb37291-bac9-40fc-997b-de1978ac2d65
     prefab: {fileID: 0}
-    position: {x: 4.0245934, y: 4.0072774e-16, z: -18.047174}
-    rotation: {x: 0, y: 0.6412802, z: 0, w: 0.7673068}
+    position: {x: -3.3630075, y: 0.029280832, z: -24.270712}
+    rotation: {x: 0.040689196, y: 0.9584694, z: 0.21905178, w: 0.17803714}
     scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 31e88bcb-68e1-4a14-ba6d-0ef789977526
+  - UniqueID: d7eff21a-c90f-43cd-a10e-b2a04da29c12
     prefab: {fileID: 0}
-    position: {x: -6.0285378, y: 4.515986e-16, z: -20.338194}
-    rotation: {x: 0, y: 0.37737423, z: 0, w: -0.92606086}
+    position: {x: -8.308641, y: 4.944351e-16, z: -22.267378}
+    rotation: {x: 0, y: 0.28531304, z: 0, w: -0.9584344}
     scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 892dbedc-2fdb-46ed-9d26-47bad1845bc8
+  - UniqueID: 0f46b67d-5106-4ca9-9e80-463de0cebf07
     prefab: {fileID: 0}
-    position: {x: -6.068241, y: 5.0259335e-16, z: -22.634792}
-    rotation: {x: 0, y: 0.13563672, z: 0, w: -0.99075866}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: bfc4d79f-4388-44fa-951e-a3de7b936783
-    prefab: {fileID: 0}
-    position: {x: 1.546177, y: 0.088470265, z: -24.393442}
-    rotation: {x: -0.12436217, y: 0.8088634, z: 0.18486033, w: -0.5441514}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: a4ac59b0-045d-4608-a857-720d26e19522
-    prefab: {fileID: 0}
-    position: {x: 0.84832513, y: 3.5316557e-16, z: -15.905163}
-    rotation: {x: 0, y: 0.14354883, z: 0, w: -0.9896432}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 266f4a27-47bc-4d7e-9841-548c883e7d6f
-    prefab: {fileID: 0}
-    position: {x: 5.2593, y: 4.8922437e-16, z: -22.032707}
-    rotation: {x: 0, y: 0.97259647, z: 0, w: -0.23249988}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 0433c54c-0808-412e-bc2e-34f6cdc1c27f
-    prefab: {fileID: 0}
-    position: {x: -5.5390515, y: 1.7605504, z: -27.860497}
-    rotation: {x: -0.110030286, y: 0.84768784, z: 0.1937334, w: -0.4814417}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 1693a018-7a1d-4565-bb30-cfa51af9e380
-    prefab: {fileID: 0}
-    position: {x: 1.8208694, y: 1.3467668, z: -27.002518}
-    rotation: {x: -0.077203944, y: 0.91446483, z: 0.20899484, w: -0.3378088}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 87654ebf-4ab0-4e6e-9124-56bfad0b996c
-    prefab: {fileID: 0}
-    position: {x: -2.7106807, y: 4.0853474e-16, z: -18.39877}
-    rotation: {x: 0, y: 0.889911, z: 0, w: 0.45613426}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: fed6d29a-d285-4bfa-ae44-b49a82c53ca3
-    prefab: {fileID: 0}
-    position: {x: 0.30947953, y: 2.0499423, z: -28.460548}
-    rotation: {x: -0.18006198, y: 0.5741295, z: 0.13121346, w: -0.787868}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 76d07b68-792d-4316-9b7c-bee30921ba30
-    prefab: {fileID: 0}
-    position: {x: -2.7573135, y: 1.383195, z: -27.07805}
-    rotation: {x: -0.05922596, y: 0.9397896, z: 0.21478263, w: -0.25914544}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 1c1ce7c8-021f-4084-aff3-d369a5912d68
-    prefab: {fileID: 0}
-    position: {x: 4.4054074, y: 5.2444506e-16, z: -23.618906}
-    rotation: {x: 0, y: 0.47180218, z: 0, w: -0.88170445}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 0e0c06b4-ec32-42ef-8e14-028b3f4b64ee
-    prefab: {fileID: 0}
-    position: {x: 0.49209055, y: 4.7864545e-16, z: -21.556274}
-    rotation: {x: 0, y: 0.1274932, z: 0, w: -0.99183947}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 08b90f67-401e-42c7-bcdc-012679931df9
-    prefab: {fileID: 0}
-    position: {x: 4.7260184, y: 1.2314945, z: -21.381184}
-    rotation: {x: 0.45987907, y: 0.62518644, z: 0.4844919, w: 0.4036345}
+    position: {x: -6.516699, y: 4.6476804e-16, z: -20.931292}
+    rotation: {x: 0, y: 0.3896182, z: 0, w: -0.92097646}
     scale: {x: 1, y: 1, z: 1}

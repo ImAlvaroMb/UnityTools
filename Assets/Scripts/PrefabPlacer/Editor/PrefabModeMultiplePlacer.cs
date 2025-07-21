@@ -163,6 +163,7 @@ public class PrefabModeMultiplePlacer : MonoBehaviour, IPrefabPlacerMode
 
             Undo.RegisterCreatedObjectUndo(newObject, "Place Multiple Prefabs");
             PrefabPlacerObjectMarker marker = newObject.AddComponent<PrefabPlacerObjectMarker>();
+            marker.trackingSO = activeTrackerSO;
             marker.uniqueID = Guid.NewGuid().ToString();
             activeTrackerSO.AddPlacement(new PlacementData
             {
