@@ -14,6 +14,8 @@ public class PrefabModeMultiplePlacer : MonoBehaviour, IPrefabPlacerMode
     public Vector2 scaleValues = Vector2.one;
     public float placingSeparation; // used to generate an area on each spawned object to not overlap other spawn pouints
 
+    private const int MAX_PLACEMENT_TRIES = 20;
+
     public void OnModeActivated(ProfilePlacedObjectsTrackerSO trackerSO)
     {
         activeTrackerSO = trackerSO;
@@ -87,41 +89,79 @@ public class PrefabModeMultiplePlacer : MonoBehaviour, IPrefabPlacerMode
     {
         if (activeTrackerSO == null || targetPrefabsList == null || targetPrefabsList.Count == 0)
         {
-            Debug.LogWarning("No hay prefabs seleccionados para colocar.");
+            Debug.LogWarning("No selected prefabs to place.");
             return;
         }
 
         // decide how many objects are goiong to be instantiated
         int objectCount = Mathf.RoundToInt(density * placingRadius / 5f);
+        List<Vector3> placedPositions = new List<Vector3>();
 
         for (int i = 0; i < objectCount; i++)
         {
-            // 
-            GameObject prefabToPlace = targetPrefabsList[UnityEngine.Random.Range(0, targetPrefabsList.Count)];
+            Vector3 spawnPosition = Vector3.zero;
+            int currentTries = 0;
+            bool positionFound = false;
+            Vector3 localNormal = Vector3.zero;
 
-            // random position while checking if it is possible to instantiate it somewhere
-            Vector2 randomPointInCircle = UnityEngine.Random.insideUnitCircle * placingRadius;
-            Vector3 spawnPosition = centerPosition + new Vector3(randomPointInCircle.x, 0, randomPointInCircle.y);
-
-            RaycastHit placementHit;
-            if (Physics.Raycast(spawnPosition + surfaceNormal * 5f, -surfaceNormal, out placementHit))
+            // Attempt to find a valid position 
+            while (currentTries < MAX_PLACEMENT_TRIES)
             {
-                spawnPosition = placementHit.point;
+                currentTries++;
+
+                // Generate a random point within the placement circle
+                Vector2 randomPointInCircle = UnityEngine.Random.insideUnitCircle * placingRadius;
+                Vector3 potentialPosition = centerPosition + new Vector3(randomPointInCircle.x, 0, randomPointInCircle.y);
+
+                // Find the actual ground height at that point
+                if (Physics.Raycast(potentialPosition + surfaceNormal * 5f, -surfaceNormal, out RaycastHit placementHit))
+                {
+                    potentialPosition = placementHit.point;
+
+                    // Check if this new spot is too close to others placed in this same burst.
+                    bool isOverlapping = false;
+                    foreach (Vector3 pos in placedPositions)
+                    {
+                        if (Vector3.Distance(potentialPosition, pos) < placingSeparation)
+                        {
+                            isOverlapping = true;
+                            break; 
+                        }
+                    }
+
+                
+                    if (!isOverlapping)
+                    {
+                        spawnPosition = potentialPosition;
+                        localNormal = placementHit.normal;
+                        positionFound = true;
+                        break; 
+                    }
+                }
             }
-            else
+
+            // If after all tries we couldn't find a valid spot skip this object.
+            if (!positionFound)
             {
                 continue;
             }
 
-            Quaternion spawnRotation = Quaternion.Euler(0, UnityEngine.Random.Range(0f, 360f), 0);
+            
+            placedPositions.Add(spawnPosition);
 
+           
+            Quaternion surfaceAlignment = Quaternion.FromToRotation(Vector3.up, localNormal);
+            Quaternion randomSpin = Quaternion.AngleAxis(UnityEngine.Random.Range(0f, 360f), Vector3.up);
+            Quaternion spawnRotation = surfaceAlignment * randomSpin;
+
+            GameObject prefabToPlace = targetPrefabsList[UnityEngine.Random.Range(0, targetPrefabsList.Count)];
             GameObject newObject = (GameObject)PrefabUtility.InstantiatePrefab(prefabToPlace);
+
             newObject.transform.position = spawnPosition;
             newObject.transform.rotation = spawnRotation;
             newObject.transform.localScale = Vector3.one * UnityEngine.Random.Range(scaleValues.x, scaleValues.y);
 
             Undo.RegisterCreatedObjectUndo(newObject, "Place Multiple Prefabs");
-
             PrefabPlacerObjectMarker marker = newObject.AddComponent<PrefabPlacerObjectMarker>();
             marker.uniqueID = Guid.NewGuid().ToString();
             activeTrackerSO.AddPlacement(new PlacementData
@@ -132,9 +172,7 @@ public class PrefabModeMultiplePlacer : MonoBehaviour, IPrefabPlacerMode
                 rotation = newObject.transform.rotation,
                 scale = newObject.transform.localScale
             });
-
             EditorUtility.SetDirty(activeTrackerSO);
-            
         }
         //StopPlacing();
     }
