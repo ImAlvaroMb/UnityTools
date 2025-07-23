@@ -7,7 +7,7 @@ using Unity.Mathematics;
 public class PrefabModeMultiplePlacer : MonoBehaviour, IPrefabPlacerMode
 {
     private ProfilePlacedObjectsTrackerSO activeTrackerSO;
-    private bool isPlacing;
+    private bool isPlacing; 
     private List<GameObject> targetPrefabsList = new List<GameObject>();
     public float placingRadius;
     public float density;
@@ -104,21 +104,21 @@ public class PrefabModeMultiplePlacer : MonoBehaviour, IPrefabPlacerMode
             bool positionFound = false;
             Vector3 localNormal = Vector3.zero;
 
-            // Attempt to find a valid position 
+            // attempt to find a valid position 
             while (currentTries < MAX_PLACEMENT_TRIES)
             {
                 currentTries++;
 
-                // Generate a random point within the placement circle
+                // generate a random point within the placement circle
                 Vector2 randomPointInCircle = UnityEngine.Random.insideUnitCircle * placingRadius;
                 Vector3 potentialPosition = centerPosition + new Vector3(randomPointInCircle.x, 0, randomPointInCircle.y);
 
-                // Find the actual ground height at that point
+                //find the actual ground height at that point
                 if (Physics.Raycast(potentialPosition + surfaceNormal * 5f, -surfaceNormal, out RaycastHit placementHit))
                 {
                     potentialPosition = placementHit.point;
 
-                    // Check if this new spot is too close to others placed in this same burst.
+                    //check if this new spot is too close to others placed in this same burst.
                     bool isOverlapping = false;
                     foreach (Vector3 pos in placedPositions)
                     {
@@ -140,7 +140,7 @@ public class PrefabModeMultiplePlacer : MonoBehaviour, IPrefabPlacerMode
                 }
             }
 
-            // If after all tries we couldn't find a valid spot skip this object.
+            // if after all tries we couldnt find a valid spot skip this object.
             if (!positionFound)
             {
                 continue;

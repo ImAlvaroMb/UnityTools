@@ -84,7 +84,7 @@ public class PrefabModeEraser : MonoBehaviour , IPrefabPlacerMode
         {
             if(obj.TryGetComponent(out PrefabPlacerObjectMarker markerToRemove))
             {
-                if(activeTrackerSO.ContainsByUniqueID(markerToRemove.uniqueID) && eraserBounds.Intersects(markerToRemove.GetBounds()))
+                if(activeTrackerSO.ContainsByUniqueID(markerToRemove.uniqueID) && eraserBounds.Intersects(markerToRemove.GetBounds())) // double check if it is contained in the active trackerSO just in case, not really necessary
                 {
                     activeTrackerSO.RemoveByUniqueID(markerToRemove.uniqueID);
                     Undo.DestroyObjectImmediate(obj);
