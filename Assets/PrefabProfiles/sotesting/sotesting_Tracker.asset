@@ -12,34 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85cc0911844f7174a90768807f64bca5, type: 3}
   m_Name: sotesting_Tracker
   m_EditorClassIdentifier: 
-  placedPrefabs:
-  - UniqueID: 55e6468a-8853-442a-a276-249047c5407c
-    prefab: {fileID: 0}
-    position: {x: -9.335531, y: 1.83518e-16, z: -8.2649145}
-    rotation: {x: 0, y: 0.9514298, z: 0, w: 0.30786586}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: acfd341b-d8a0-4b96-9b8c-ea45e9f7c710
-    prefab: {fileID: 0}
-    position: {x: -11.100222, y: 2.9848282e-16, z: -13.442472}
-    rotation: {x: 0, y: 0.020973487, z: 0, w: -0.99978006}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: e42b7e29-c32b-4f9d-93ac-8c62da63df58
-    prefab: {fileID: 0}
-    position: {x: -7.539793, y: 1.9455608e-16, z: -8.762027}
-    rotation: {x: 0, y: 0.9045251, z: 0, w: -0.42642042}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 7cb37291-bac9-40fc-997b-de1978ac2d65
-    prefab: {fileID: 0}
-    position: {x: -3.3630075, y: 0.029280832, z: -24.270712}
-    rotation: {x: 0.040689196, y: 0.9584694, z: 0.21905178, w: 0.17803714}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: d7eff21a-c90f-43cd-a10e-b2a04da29c12
-    prefab: {fileID: 0}
-    position: {x: -8.308641, y: 4.944351e-16, z: -22.267378}
-    rotation: {x: 0, y: 0.28531304, z: 0, w: -0.9584344}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 0f46b67d-5106-4ca9-9e80-463de0cebf07
-    prefab: {fileID: 0}
-    position: {x: -6.516699, y: 4.6476804e-16, z: -20.931292}
-    rotation: {x: 0, y: 0.3896182, z: 0, w: -0.92097646}
-    scale: {x: 1, y: 1, z: 1}
+  placedPrefabs: []

@@ -65,9 +65,9 @@ public class PrefabModeEraser : MonoBehaviour , IPrefabPlacerMode
     {
         if (activeTrackerSO == null) return;
 
+        HashSet<GameObject> objectsToRemove = new HashSet<GameObject>();
         Collider[] hitColliders = Physics.OverlapSphere(position, eraserRadius);
         Bounds eraserBounds = new Bounds(position, new Vector3(eraserRadius, eraserRadius, eraserRadius));
-        HashSet<GameObject> objectsToRemove = new HashSet<GameObject>();
 
         foreach (var hit in hitColliders)
         {
@@ -80,23 +80,19 @@ public class PrefabModeEraser : MonoBehaviour , IPrefabPlacerMode
             }
         }
 
-        PrefabPlacerObjectMarker[] profileMarkers = activeTrackerSO.GetMarkersArray();
-        foreach (PrefabPlacerObjectMarker marker in profileMarkers)
+        foreach(var obj in objectsToRemove)
         {
-            if (marker == null || objectsToRemove.Contains(marker.gameObject)) continue;
-
-            if(activeTrackerSO.ContainsByUniqueID(marker.uniqueID) && eraserBounds.Intersects(marker.GetBounds()))
+            if(obj.TryGetComponent(out PrefabPlacerObjectMarker markerToRemove))
             {
-                objectsToRemove.Add(marker.gameObject);
+                if(activeTrackerSO.ContainsByUniqueID(markerToRemove.uniqueID) && eraserBounds.Intersects(markerToRemove.GetBounds()))
+                {
+                    activeTrackerSO.RemoveByUniqueID(markerToRemove.uniqueID);
+                    Undo.DestroyObjectImmediate(obj);
+                    EditorUtility.SetDirty(activeTrackerSO);
+                }
             }
         }
 
-
-
-        foreach (var obj in objectsToRemove)
-        {
-            activeTrackerSO.RemoveByUniqueID(obj.GetComponent<PrefabPlacerObjectMarker>().uniqueID);
-            Undo.DestroyObjectImmediate(obj); // use Undo for better editor undo functionality
-        }
+       
     }
 }
