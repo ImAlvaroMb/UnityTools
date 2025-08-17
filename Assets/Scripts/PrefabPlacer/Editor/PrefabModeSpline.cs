@@ -6,6 +6,8 @@ using UnityEngine;
 public class PrefabModeSpline : MonoBehaviour, IPrefabPlacerMode
 {
     public GameObject prefabToPlace;
+    // create spline class that will contain node points, handles angles, line info...
+    // own SO to contain all created splines so rthat already placed spline can be edited...
 
     private ProfilePlacedObjectsTrackerSO trackerSO;
 
@@ -23,11 +25,12 @@ public class PrefabModeSpline : MonoBehaviour, IPrefabPlacerMode
 
     public void OnModeDeactivated()
     {
-        
+        isPlacing = false;
+        SceneView.duringSceneGui -= OnSceneGUI;
     }
 
     private void OnSceneGUI(SceneView sceneView)
     {
-
+        if (!isPlacing) return;
     }
 }
