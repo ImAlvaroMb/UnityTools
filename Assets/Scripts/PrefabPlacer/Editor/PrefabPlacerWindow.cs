@@ -15,6 +15,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
     private PrefabModeSinglePlacer placer = new PrefabModeSinglePlacer();
     private PrefabModeEraser eraser = new PrefabModeEraser();
     private PrefabModeMultiplePlacer multiplePlacer = new PrefabModeMultiplePlacer();
+    private PrefabModeSpline splinePlacer = new PrefabModeSpline();
     public ProfilePlacedObjectsTrackerSO activeTracker;
     private List<GameObject> prefabs;
 
@@ -25,7 +26,8 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
     {
         SinglePlace,
         Erase,
-        MultiplePlace
+        MultiplePlace,
+        SplinePlace
     }
     private Dictionary<ToolMode, IPrefabPlacerMode> modeHandlers;
     private float eraserRadius = 2f;
@@ -33,6 +35,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
     private float multiplePlacingRadius = 2f;
     private float multiplePlacingDensity = 1f;
     private float multiplePlacingSeparation = 1f;
+
 
     //PREFAB SELECTION
     private int selectedPrefabIndex = 0;
@@ -80,7 +83,8 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         {
             { ToolMode.SinglePlace, placer},
             { ToolMode.Erase, eraser},
-            { ToolMode.MultiplePlace, multiplePlacer}
+            { ToolMode.MultiplePlace, multiplePlacer},
+            { ToolMode.SplinePlace, splinePlacer}
         };
     }
 
