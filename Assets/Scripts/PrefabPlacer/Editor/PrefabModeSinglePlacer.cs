@@ -25,7 +25,7 @@ public class PrefabModeSinglePlacer : MonoBehaviour, IPrefabPlacerMode //handles
     }
     public void OnActionDone()
     {
-        PrefabPlacerWindow.OnToolModeActionDone();
+        PrefabPlacerWindow.CallToolModeActionDone();
     }
 
 
@@ -124,9 +124,9 @@ public class PrefabModeSinglePlacer : MonoBehaviour, IPrefabPlacerMode //handles
                 scale = instance.transform.localScale
             });
 
+            PrefabPlacerWindow.CallPrefabInstanceActionTaken(instance.name, Operation.Add);
             EditorUtility.SetDirty(activeTrackerSO);
         }
-
         OnActionDone();
         //StopPlacing();
     }

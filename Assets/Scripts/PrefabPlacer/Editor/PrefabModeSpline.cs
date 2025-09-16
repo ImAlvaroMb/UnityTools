@@ -31,7 +31,7 @@ public class PrefabModeSpline : MonoBehaviour, IPrefabPlacerMode
 
     public void OnActionDone()
     {
-        PrefabPlacerWindow.OnToolModeActionDone();
+        PrefabPlacerWindow.CallToolModeActionDone();
     }
 
     private void OnSceneGUI(SceneView sceneView)

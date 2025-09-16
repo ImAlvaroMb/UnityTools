@@ -38,33 +38,8 @@ MonoBehaviour:
     position: {x: 12.329211, y: -1.6893438e-16, z: 7.608128}
     rotation: {x: 0, y: 0, z: 0, w: 1}
     scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 10646906-42ed-404f-9cf2-c7ec5fcc1717
-    prefab: {fileID: 0}
-    position: {x: -3.643723, y: -5.0050644e-17, z: 2.2540805}
-    rotation: {x: 0, y: 0.64480907, z: 0, w: 0.7643437}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 7c506546-6458-48ad-b807-332538da8a32
-    prefab: {fileID: 0}
-    position: {x: -9.719485, y: -6.640033e-17, z: 2.9904046}
-    rotation: {x: 0, y: 0.998026, z: 0, w: 0.06280252}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 95048ead-5b70-4cd8-9495-2734f89ac6b4
-    prefab: {fileID: 0}
-    position: {x: -4.4394183, y: 1.2042177e-17, z: -0.5423314}
-    rotation: {x: 0, y: 0.17373161, z: 0, w: 0.98479307}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: aa95dc7a-8dfd-4ab4-9c19-761c37113f0b
-    prefab: {fileID: 0}
-    position: {x: -7.0109663, y: 3.616485e-17, z: -1.6287202}
-    rotation: {x: 0, y: 0.3572296, z: 0, w: -0.9340166}
-    scale: {x: 1, y: 1, z: 1}
   - UniqueID: cb3d1345-399f-4525-b4a5-789b9a427d2a
     prefab: {fileID: 0}
     position: {x: 2.5983453, y: 1.8211705e-16, z: -8.201823}
     rotation: {x: 0, y: 0.45620906, z: 0, w: 0.8898726}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: dd419e32-eae3-4ca3-bfcb-ba8531e40669
-    prefab: {fileID: 0}
-    position: {x: -3.5120165, y: 1.6442826e-16, z: -7.4051905}
-    rotation: {x: 0, y: 0.8493849, z: 0, w: 0.52777386}
     scale: {x: 1, y: 1, z: 1}

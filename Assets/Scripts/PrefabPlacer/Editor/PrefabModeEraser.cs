@@ -26,7 +26,7 @@ public class PrefabModeEraser : MonoBehaviour , IPrefabPlacerMode
 
     public void OnActionDone()
     {
-        PrefabPlacerWindow.OnToolModeActionDone();
+        PrefabPlacerWindow.CallToolModeActionDone();
     }
 
     public void StartErasing(ProfilePlacedObjectsTrackerSO trackerSO)
@@ -94,6 +94,7 @@ public class PrefabModeEraser : MonoBehaviour , IPrefabPlacerMode
                 if(activeTrackerSO.ContainsByUniqueID(markerToRemove.uniqueID) && eraserBounds.Intersects(markerToRemove.GetBounds())) // double check if it is contained in the active trackerSO just in case, not really necessary
                 {
                     activeTrackerSO.RemoveByUniqueID(markerToRemove.uniqueID);
+                    PrefabPlacerWindow.CallPrefabInstanceActionTaken(obj.name, Operation.Substract);
                     Undo.DestroyObjectImmediate(obj);
                     EditorUtility.SetDirty(activeTrackerSO);
                 }

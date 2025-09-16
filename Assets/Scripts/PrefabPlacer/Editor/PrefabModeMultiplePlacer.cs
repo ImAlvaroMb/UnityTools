@@ -31,7 +31,7 @@ public class PrefabModeMultiplePlacer : MonoBehaviour, IPrefabPlacerMode
 
     public void OnActionDone()
     {
-        PrefabPlacerWindow.OnToolModeActionDone();
+        PrefabPlacerWindow.CallToolModeActionDone();
     }
 
     public void StartPlacing(List<GameObject> prefabs, ProfilePlacedObjectsTrackerSO trackerSO)
@@ -178,6 +178,7 @@ public class PrefabModeMultiplePlacer : MonoBehaviour, IPrefabPlacerMode
                 rotation = newObject.transform.rotation,
                 scale = newObject.transform.localScale
             });
+            PrefabPlacerWindow.CallPrefabInstanceActionTaken(newObject.name, Operation.Add);
             EditorUtility.SetDirty(activeTrackerSO);
         }
 
