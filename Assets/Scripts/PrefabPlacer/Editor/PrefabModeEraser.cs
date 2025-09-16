@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PrefabModeEraser : MonoBehaviour , IPrefabPlacerMode
 {
+
+
     private ProfilePlacedObjectsTrackerSO activeTrackerSO;
     public float eraserRadius;
     private bool isErasing;
@@ -20,6 +22,11 @@ public class PrefabModeEraser : MonoBehaviour , IPrefabPlacerMode
     {
         isErasing = false;
         SceneView.duringSceneGui -= OnSceneGUI;
+    }
+
+    public void OnActionDone()
+    {
+        PrefabPlacerWindow.OnToolModeActionDone();
     }
 
     public void StartErasing(ProfilePlacedObjectsTrackerSO trackerSO)
@@ -93,6 +100,7 @@ public class PrefabModeEraser : MonoBehaviour , IPrefabPlacerMode
             }
         }
 
+        OnActionDone();
        
     }
 }

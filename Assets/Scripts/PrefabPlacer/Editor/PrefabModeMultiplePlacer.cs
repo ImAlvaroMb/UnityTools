@@ -29,6 +29,11 @@ public class PrefabModeMultiplePlacer : MonoBehaviour, IPrefabPlacerMode
         SceneView.duringSceneGui -= OnSceneGUI;
     }
 
+    public void OnActionDone()
+    {
+        PrefabPlacerWindow.OnToolModeActionDone();
+    }
+
     public void StartPlacing(List<GameObject> prefabs, ProfilePlacedObjectsTrackerSO trackerSO)
     {
         if (prefabs == null) return;
@@ -175,6 +180,8 @@ public class PrefabModeMultiplePlacer : MonoBehaviour, IPrefabPlacerMode
             });
             EditorUtility.SetDirty(activeTrackerSO);
         }
+
+        OnActionDone();
         //StopPlacing();
     }
 }

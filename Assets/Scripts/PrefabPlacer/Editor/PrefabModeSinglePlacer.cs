@@ -23,6 +23,11 @@ public class PrefabModeSinglePlacer : MonoBehaviour, IPrefabPlacerMode //handles
         SceneView.duringSceneGui -= OnSceneGUI;
         DestroyPreviewInstance();
     }
+    public void OnActionDone()
+    {
+        PrefabPlacerWindow.OnToolModeActionDone();
+    }
+
 
     public void StartPlacing(GameObject prefab, ProfilePlacedObjectsTrackerSO trackerSO)
     {
@@ -121,6 +126,8 @@ public class PrefabModeSinglePlacer : MonoBehaviour, IPrefabPlacerMode //handles
 
             EditorUtility.SetDirty(activeTrackerSO);
         }
+
+        OnActionDone();
         //StopPlacing();
     }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -54,9 +55,15 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
     private const float DRAG_AND_DROP_MIN_HEIGHT = 50f;
     private const float DRAG_AND_DROP_MAX_HEIGHT = 50f;
 
+    //static events
+    public static event Action OnToolModeActionEvent;
+
+    private string statusMessage = "Status message...";
+
     [MenuItem("Tools/Prefab Placer")]
     public static void ShowWindow() => GetWindow<PrefabPlacerWindow>("Prefab Placer");
 
+#region Initial functions
     private void OnEnable()
     {
         minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
@@ -118,6 +125,13 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
         RefreshPrefabs();
         Repaint();
+    }
+    #endregion
+
+    public static void OnToolModeActionDone()
+    {
+        OnToolModeActionEvent?.Invoke();
+        Debug.Log("Message Recieved");
     }
 
     private void RefreshProfiles()
@@ -511,7 +525,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
                     float progress;
                     float count = 0;
-                    foreach (Object draggedObject in DragAndDrop.objectReferences)
+                    foreach (UnityEngine.Object draggedObject in DragAndDrop.objectReferences)
                     {
                         string path = AssetDatabase.GetAssetPath(draggedObject);
                         progress = (float) count / DragAndDrop.objectReferences.Length;
