@@ -42,6 +42,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
     private int selectedPrefabIndex = 0;
     private bool canSelectMultiplePrefabIndex = false;
     private List<int> selectedPrefabIndexList = new List<int>();
+    private Dictionary<string, int> prefabInstanceCounts = new Dictionary<string, int>();
 
     private const float PREFAB_BUTTON_WIDTH = 110f;
     private const float PREFAB_BUTTON_HEIGHT = 100f;
@@ -57,6 +58,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
     //static events
     public static event Action OnToolModeActionEvent;
+    public static event Action<string, Operation> OnPrefabInstanceActionTaken;
 
     private string statusMessage = "Status message...";
 
@@ -68,16 +70,19 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
     {
         minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
         EditorApplication.projectChanged += RefreshProfiles;
+        OnPrefabInstanceActionTaken += UpdateSinglePrefabIntanceCount;
         InitializeModeDictionary();
         previousToolMode = currentToolMode;
         RefreshProfiles();
         LoadSelectedProfile();
         ValidateProfileSelection();
+        CheckAllPrefabInstanceCounts();
     }
 
     private void OnDisable()
     {
         EditorApplication.projectChanged -= RefreshProfiles;
+        OnPrefabInstanceActionTaken -= UpdateSinglePrefabIntanceCount;
         SaveSelectedProfile();
         placer.StopPlacing();
         eraser.StopErasing();
@@ -128,10 +133,58 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
     }
     #endregion
 
-    public static void OnToolModeActionDone()
+    public static void CallToolModeActionDone()
     {
         OnToolModeActionEvent?.Invoke();
         Debug.Log("Message Recieved");
+    }
+
+    public static void CallPrefabInstanceActionTaken(string prefabName, Operation actionType)
+    {
+        OnPrefabInstanceActionTaken?.Invoke(prefabName, actionType);
+    }
+
+    private void CheckAllPrefabInstanceCounts() // count all the already placed instances by the tool in the current scene
+    {
+        prefabInstanceCounts.Clear();
+
+        PrefabPlacerObjectMarker[] markers = FindObjectsByType<PrefabPlacerObjectMarker>(FindObjectsSortMode.None);
+
+        foreach (var marker in markers)
+        {
+            string prefabName = marker.gameObject.name;
+            if(prefabInstanceCounts.ContainsKey(prefabName))
+            {
+                prefabInstanceCounts[prefabName]++;
+            } else
+            {
+                prefabInstanceCounts[prefabName] = 1;
+            }
+        }
+
+        foreach (string name in prefabInstanceCounts.Keys)
+        {
+            Debug.Log($"{name} there is {prefabInstanceCounts[name]} instances");
+        }
+    }
+
+    private void UpdateSinglePrefabIntanceCount(string prefabName, Operation type)
+    {
+        if(prefabInstanceCounts.ContainsKey(prefabName))
+        {
+            if(type == Operation.Add)
+            {
+                prefabInstanceCounts[prefabName]++;
+            } else
+            {
+                prefabInstanceCounts[prefabName]--;
+            }
+        }
+
+        foreach (string name in prefabInstanceCounts.Keys)
+        {
+            Debug.Log($"{name} there is {prefabInstanceCounts[name]} instances");
+        }
     }
 
     private void RefreshProfiles()
