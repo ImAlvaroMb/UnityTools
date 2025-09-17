@@ -181,6 +181,8 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
             }
         }
 
+        Repaint();
+
         foreach (string name in prefabInstanceCounts.Keys)
         {
             Debug.Log($"{name} there is {prefabInstanceCounts[name]} instances");
