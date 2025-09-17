@@ -570,7 +570,8 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
         if (prefabs.Count > 0)
         {
-            DrawPrefabGrid();
+            //DrawPrefabGrid();
+            DrawSinglePrefabGrid();
             DrawPrefabControls();
             StartPlacingSelectedPrefab();
         }
@@ -623,7 +624,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
     }
 
-    private void DrawPrefabGrid()//show prefabs in grid structure
+    private void DrawPrefabGrid()//show prefabs in grid structure (not used anymore)
     {
         scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
         int columns = Mathf.FloorToInt(EditorGUIUtility.currentViewWidth / 120);
@@ -642,6 +643,80 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         }
 
         EditorGUILayout.EndScrollView();
+    }
+
+    private void DrawSinglePrefabGrid() // new method
+    {
+        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+
+        int columns = Mathf.Max(1, Mathf.FloorToInt((EditorGUIUtility.currentViewWidth - 20f) / (PREFAB_BUTTON_WIDTH + PREFAB_PADDING)));
+
+        bool selectionChanged = false;
+
+        // Manual grid layout setup
+        int totalRows = Mathf.CeilToInt((float)prefabs.Count / columns);
+        float gridHeight = totalRows * (PREFAB_BUTTON_HEIGHT + PREFAB_PADDING);
+        Rect gridRect = GUILayoutUtility.GetRect(0, EditorGUIUtility.currentViewWidth - 20f, gridHeight, gridHeight);
+
+        for (int i = 0; i < prefabs.Count; i++)
+        {
+            int row = i / columns;
+            int col = i % columns;
+
+            Rect buttonRect = new Rect(
+                gridRect.x + col * (PREFAB_BUTTON_WIDTH + PREFAB_PADDING) + (PREFAB_PADDING / 2f),
+                gridRect.y + row * (PREFAB_BUTTON_HEIGHT + PREFAB_PADDING) + (PREFAB_PADDING / 2f),
+                PREFAB_BUTTON_WIDTH,
+                PREFAB_BUTTON_HEIGHT
+            );
+
+            Color originalBackgroundColor = GUI.backgroundColor;
+            if (selectedPrefabIndex == i)
+            {
+                GUI.backgroundColor = highlightColor;
+            }
+
+            if (GUI.Button(buttonRect, GetPrefabThumbnails()[i]))
+            {
+                if (selectedPrefabIndex != i)
+                {
+                    selectedPrefabIndex = i;
+                    selectionChanged = true;
+                }
+            }
+
+            GUI.backgroundColor = originalBackgroundColor;
+
+            // Draw the instance count label in the top-right corner
+            string prefabName = prefabs[i].name;
+            if (prefabInstanceCounts.ContainsKey(prefabName))
+            {
+                int count = prefabInstanceCounts[prefabName];
+
+                GUIStyle countStyle = new GUIStyle(EditorStyles.boldLabel);
+                countStyle.normal.textColor = Color.white;
+                countStyle.alignment = TextAnchor.UpperRight;
+                countStyle.fontSize = 12;
+                countStyle.fontStyle = FontStyle.Bold;
+
+                Rect countRect = new Rect(
+                    buttonRect.x,
+                    buttonRect.y + 5,
+                    buttonRect.width - 10,
+                    20
+                );
+
+                GUI.Label(countRect, count.ToString(), countStyle);
+            }
+        }
+
+        EditorGUILayout.EndScrollView();
+
+        if (selectionChanged)
+        {
+            StartPlacingSelectedPrefab();
+            Repaint();
+        }
     }
 
     private GUIContent[] GetPrefabThumbnails()//get prefab preview images
