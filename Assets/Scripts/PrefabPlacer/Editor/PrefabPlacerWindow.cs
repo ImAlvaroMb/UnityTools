@@ -506,7 +506,28 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
                     selectedPrefabIndex = i; 
                 }
             }
+
             GUI.backgroundColor = originalBackgroundColor; // Restore original color
+
+            string prefabName = prefabs[i].name;
+            if (prefabInstanceCounts.ContainsKey(prefabName))
+            {
+                int count = prefabInstanceCounts[prefabName]; // get number of instances of this prefab in the current scene
+                GUIStyle labelStyle = new GUIStyle(EditorStyles.boldLabel);
+                labelStyle.normal.textColor = Color.white;
+                labelStyle.alignment = TextAnchor.UpperRight;
+                labelStyle.fontSize = 12;
+                labelStyle.richText = true;
+
+                Rect labelRect = new Rect(
+                    buttonRect.x, 
+                    buttonRect.y + 5, // small offset onm the top
+                    buttonRect.width - 10, // small offset to the inside zxone of the button
+                    20
+                    );
+
+                GUI.Label(labelRect, count.ToString(), labelStyle);
+            }
         }
 
         EditorGUILayout.EndScrollView();
