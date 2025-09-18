@@ -76,7 +76,7 @@ public class PrefabModeEraser : MonoBehaviour , IPrefabPlacerMode
         Collider[] hitColliders = Physics.OverlapSphere(position, eraserRadius);
         Bounds eraserBounds = new Bounds(position, new Vector3(eraserRadius, eraserRadius, eraserRadius));
 
-        foreach (var hit in hitColliders)
+        /*foreach (var hit in hitColliders)
         {
             if(hit.gameObject.TryGetComponent(out PrefabPlacerObjectMarker marker))
             {
@@ -84,6 +84,16 @@ public class PrefabModeEraser : MonoBehaviour , IPrefabPlacerMode
                 {
                     objectsToRemove.Add(hit.gameObject);
                 }
+            }
+        }*/
+
+        PrefabPlacerObjectMarker[] allProfileInstances = activeTrackerSO.GetMarkersArray();
+
+        foreach (PrefabPlacerObjectMarker marker in allProfileInstances)
+        {
+            if (eraserBounds.Intersects(marker.GetBounds()))
+            {
+                objectsToRemove.Add(marker.gameObject);
             }
         }
 

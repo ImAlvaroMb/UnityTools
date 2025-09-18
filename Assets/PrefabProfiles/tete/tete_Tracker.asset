@@ -12,34 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85cc0911844f7174a90768807f64bca5, type: 3}
   m_Name: tete_Tracker
   m_EditorClassIdentifier: 
-  placedPrefabs:
-  - UniqueID: be08da29-b8eb-4739-96a1-d3fa6f8bd7de
-    prefab: {fileID: 0}
-    position: {x: 11.728148, y: -5.546292e-17, z: 2.4978278}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 7419993a-bd4a-403d-9655-207524bf97aa
-    prefab: {fileID: 0}
-    position: {x: 14.20998, y: -3.9174427e-17, z: 1.7642592}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: f4bccb0d-699d-4e63-ae02-490af14a6b69
-    prefab: {fileID: 0}
-    position: {x: 10.125656, y: -9.197489e-17, z: 4.142181}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: a4f50d2b-f9b5-4fa0-b69c-fab95bfb531a
-    prefab: {fileID: 0}
-    position: {x: 14.035887, y: -9.6254984e-17, z: 4.334939}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: a2e5b1e3-e262-44b6-9665-a515ff195796
-    prefab: {fileID: 0}
-    position: {x: 12.329211, y: -1.6893438e-16, z: 7.608128}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: cb3d1345-399f-4525-b4a5-789b9a427d2a
-    prefab: {fileID: 0}
-    position: {x: 2.5983453, y: 1.8211705e-16, z: -8.201823}
-    rotation: {x: 0, y: 0.45620906, z: 0, w: 0.8898726}
-    scale: {x: 1, y: 1, z: 1}
+  placedPrefabs: []

@@ -18,108 +18,22 @@ MonoBehaviour:
     position: {x: 4.591765, y: 1.5547705, z: 10.1372795}
     rotation: {x: 0.03502945, y: 0, z: -0.24975394, w: 0.9676755}
     scale: {x: 1, y: 1, z: 1}
+    SceneName: 
   - UniqueID: 73408cbb-bbe7-408c-bf6b-0aa3240fe530
     prefab: {fileID: 0}
     position: {x: -1.6750664, y: -1.06767696e-16, z: 4.8083897}
     rotation: {x: 0, y: 0, z: 0, w: 1}
     scale: {x: 1, y: 1, z: 1}
+    SceneName: 
   - UniqueID: dd0910c6-84bf-4ff4-b50f-f322d71e560b
     prefab: {fileID: 0}
     position: {x: -3.648845, y: -2.8392259e-16, z: 12.7867365}
     rotation: {x: 0, y: 0, z: 0, w: 1}
     scale: {x: 1, y: 1, z: 1}
+    SceneName: 
   - UniqueID: c425ad3f-8022-4f27-a87f-c3851d88a6ef
     prefab: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: -0, z: -0, w: 1}
     scale: {x: 1, y: 1, z: 1}
-  - UniqueID: a8fe8c4e-363d-4db8-a08f-fcc2f35bdfcc
-    prefab: {fileID: 0}
-    position: {x: -9.664712, y: -3.378946e-17, z: 1.5217419}
-    rotation: {x: 0, y: 0.3532321, z: 0, w: 0.9355357}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 68253b4f-437a-4536-96a6-cfaa2539189e
-    prefab: {fileID: 0}
-    position: {x: -14.713453, y: -1.11885e-16, z: 5.0388527}
-    rotation: {x: 0, y: 0.3185611, z: 0, w: 0.9479023}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: eb09e1f6-ea6d-4c00-acb9-fdf798d3e11f
-    prefab: {fileID: 0}
-    position: {x: -18.273058, y: -4.945075e-17, z: 2.2270637}
-    rotation: {x: 0, y: 0.025757477, z: 0, w: -0.99966824}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 837c7993-7400-4705-8f5b-04516df990b2
-    prefab: {fileID: 0}
-    position: {x: -13.123198, y: -6.1421575e-17, z: 2.766182}
-    rotation: {x: 0, y: 0.21938835, z: 0, w: -0.9756376}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: c573dd33-6ba0-4087-85be-b49c68e234aa
-    prefab: {fileID: 0}
-    position: {x: -12.643695, y: 2.8594128e-17, z: -1.287765}
-    rotation: {x: 0, y: 0.47253913, z: 0, w: 0.8813097}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 709d7d21-3b47-4807-9016-c91b72097081
-    prefab: {fileID: 0}
-    position: {x: -21.090717, y: -7.2326826e-17, z: 3.2573106}
-    rotation: {x: 0, y: 0.9956147, z: 0, w: -0.093548805}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: e6eb4cc0-0efe-471b-b68e-74e8761bddcc
-    prefab: {fileID: 0}
-    position: {x: -1.2718658, y: 1.1562861e-17, z: -0.520745}
-    rotation: {x: 0, y: 0.3079257, z: 0, w: -0.9514104}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 5c7c11ad-b858-409b-891c-8bfca926c843
-    prefab: {fileID: 0}
-    position: {x: 6.5055475, y: 3, z: -8.316}
-    rotation: {x: 0, y: 0.53930575, z: 0, w: 0.84211004}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: f440b7e8-f368-434f-b044-88a60100ae26
-    prefab: {fileID: 0}
-    position: {x: 8.351201, y: 2.0574732e-16, z: -9.266034}
-    rotation: {x: 0, y: 0.9643286, z: 0, w: 0.26470828}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 437364cf-27fc-4718-9862-20e5a7da4972
-    prefab: {fileID: 0}
-    position: {x: 8.781956, y: 1.7220482e-16, z: -7.7554154}
-    rotation: {x: 0, y: 0.9723054, z: 0, w: 0.23371398}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 0231c06a-fe0e-444b-b7f7-6500ca311aeb
-    prefab: {fileID: 0}
-    position: {x: 20.967447, y: 7.551106e-17, z: -3.4007158}
-    rotation: {x: 0, y: 0.027862193, z: 0, w: -0.9996118}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: f2f4e316-14ff-4ec5-84b4-eba63d64dc06
-    prefab: {fileID: 0}
-    position: {x: 19.684158, y: 1.6319127e-16, z: -7.349481}
-    rotation: {x: 0, y: 0.97462106, z: 0, w: -0.22386123}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 875df96f-1725-4d59-9f4a-c82d4bc2fcca
-    prefab: {fileID: 0}
-    position: {x: 17.21002, y: 3.7133832e-16, z: -16.72359}
-    rotation: {x: 0, y: 0.8421098, z: 0, w: 0.53930616}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 9d9996c0-c2b1-4ad9-8e78-71646dce62ad
-    prefab: {fileID: 0}
-    position: {x: 24.373262, y: 3.0622914e-16, z: -13.791333}
-    rotation: {x: 0, y: 0.49974948, z: 0, w: 0.86617}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 591bcd67-e17a-4578-9dda-20db30f60fd5
-    prefab: {fileID: 0}
-    position: {x: 19.494421, y: -1.557968e-17, z: 0.70164645}
-    rotation: {x: 0, y: 0.7300909, z: 0, w: 0.68335}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: 12e86290-bb0c-41d6-8f92-a72b74f94ce4
-    prefab: {fileID: 0}
-    position: {x: 11.896304, y: 2.3124232e-16, z: -10.414228}
-    rotation: {x: 0, y: 0.7539983, z: 0, w: -0.6568764}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: c0fc5e4f-6aca-40fa-a559-cd5d9557e43a
-    prefab: {fileID: 0}
-    position: {x: 19.267225, y: 2.2036814e-16, z: -9.9244995}
-    rotation: {x: 0, y: 0.1944045, z: 0, w: 0.98092145}
-    scale: {x: 1, y: 1, z: 1}
-  - UniqueID: f5a7918d-4924-4e4e-8dc1-ebf0fa835d8c
-    prefab: {fileID: 0}
-    position: {x: 9.092827, y: 1.8637008e-16, z: -8.393363}
-    rotation: {x: 0, y: 0.19216812, z: 0, w: -0.98136204}
-    scale: {x: 1, y: 1, z: 1}
+    SceneName: 

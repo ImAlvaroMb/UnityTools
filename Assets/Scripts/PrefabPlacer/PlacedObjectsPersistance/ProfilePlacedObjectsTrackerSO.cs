@@ -24,16 +24,18 @@ public class ProfilePlacedObjectsTrackerSO : ScriptableObject
         return placedPrefabs.Exists(p => p.UniqueID == id);
     }
 
-    public PrefabPlacerObjectMarker[] GetMarkersArray()
+    public PrefabPlacerObjectMarker[] GetMarkersArray() // doesnt work since the reference to the object doesnt persist because when reeopening a scene / project all objs are reinstantiated (not the same instance)
     {
         PrefabPlacerObjectMarker[] markers = new PrefabPlacerObjectMarker[placedPrefabs.Count];
 
-        //for(int i = 0; i < placedPrefabs.Count; i++)
-        //{
-        //    markers[i] = placedPrefabs[i].prefab.GetComponent<PrefabPlacerObjectMarker>();
-        //}
+        for(int i = 0; i < placedPrefabs.Count; i++)
+        {
+            markers[i] = placedPrefabs[i].prefab.GetComponent<PrefabPlacerObjectMarker>();
+        }
 
-        return placedPrefabs.Where(obj => obj != null)
-            .Select(obj => obj.prefab.GetComponent<PrefabPlacerObjectMarker>()).ToArray();
+        return markers;
+    
+        //return placedPrefabs.Where(obj => obj != null)
+          //  .Select(obj => obj.prefab.GetComponent<PrefabPlacerObjectMarker>()).ToArray();
     }
 }
