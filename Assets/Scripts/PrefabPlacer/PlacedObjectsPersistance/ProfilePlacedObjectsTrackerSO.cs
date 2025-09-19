@@ -38,4 +38,5 @@ public class ProfilePlacedObjectsTrackerSO : ScriptableObject
         //return placedPrefabs.Where(obj => obj != null)
           //  .Select(obj => obj.prefab.GetComponent<PrefabPlacerObjectMarker>()).ToArray();
     }
+
 }

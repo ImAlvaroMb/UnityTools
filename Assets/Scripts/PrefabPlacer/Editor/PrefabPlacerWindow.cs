@@ -10,6 +10,10 @@ using UnityEngine.SceneManagement;
 public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on the editor window) 
 {
 
+    // WHAT I NEED TO DO NOW
+    // WHEN OPENING THE TOOL I NEED TO FILL A CHACHE DICTIONARY WITH ALL THE OBJECTS (WITH MARKERS) ON THE SCENE, WHILE ON THE SAME SCENE I NEED TO UPDATE THAT DCTIONARY PROPERLY
+    // WHEN CHANGING SCENES I NEED TO EMPTY THAT DICTIONARY AND REFILL IT
+
     // GENERAL VARIABLES
     private string[] profileNames;
     private int selectedProfileIndex = 0;
