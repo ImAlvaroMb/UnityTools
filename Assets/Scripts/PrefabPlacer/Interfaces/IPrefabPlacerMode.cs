@@ -5,7 +5,7 @@ using UnityEngine;
 
 public interface IPrefabPlacerMode
 {
-    abstract void OnModeActivated(ProfilePlacedObjectsTrackerSO trackerSO);
+    abstract void OnModeActivated(ProfilePlacedObjectsTrackerSO trackerSO, string sceneName);
 
     abstract void OnModeDeactivated();
 

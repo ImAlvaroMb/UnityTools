@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on the editor window) 
 {
@@ -100,6 +101,10 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         };
     }
 
+    private string GetCurrentSceneName()
+    {
+        return SceneManager.GetActiveScene().name;
+    }
     private void ValidateProfileSelection()
     {
         if (profileNames.Length > 0)
@@ -321,7 +326,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
             if(modeHandlers.TryGetValue(currentToolMode, out IPrefabPlacerMode newMode))
             {
-                newMode.OnModeActivated(activeTracker);
+                newMode.OnModeActivated(activeTracker, GetCurrentSceneName());
             }
 
             previousToolMode = currentToolMode;

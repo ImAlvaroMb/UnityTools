@@ -11,11 +11,14 @@ public class PrefabModeEraser : MonoBehaviour , IPrefabPlacerMode
     public float eraserRadius;
     private bool isErasing;
     private bool doLogic = true;
-    public void OnModeActivated(ProfilePlacedObjectsTrackerSO trackerSO)
+    private string sceneName;
+    public void OnModeActivated(ProfilePlacedObjectsTrackerSO trackerSO, string sceneName)
     {
         activeTrackerSO = trackerSO;
         isErasing = true;
         doLogic = true;
+        this.sceneName = sceneName;
+        Debug.Log(sceneName);
     }
 
     public void OnModeDeactivated()

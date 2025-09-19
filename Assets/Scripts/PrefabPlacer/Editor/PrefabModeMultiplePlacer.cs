@@ -7,7 +7,8 @@ using Unity.Mathematics;
 public class PrefabModeMultiplePlacer : MonoBehaviour, IPrefabPlacerMode
 {
     private ProfilePlacedObjectsTrackerSO activeTrackerSO;
-    private bool isPlacing; 
+    private bool isPlacing;
+    private string sceneName;
     private List<GameObject> targetPrefabsList = new List<GameObject>();
     public float placingRadius;
     public float density;
@@ -16,10 +17,12 @@ public class PrefabModeMultiplePlacer : MonoBehaviour, IPrefabPlacerMode
 
     private const int MAX_PLACEMENT_TRIES = 20;
 
-    public void OnModeActivated(ProfilePlacedObjectsTrackerSO trackerSO)
+    public void OnModeActivated(ProfilePlacedObjectsTrackerSO trackerSO, string sceneName)
     {
         activeTrackerSO = trackerSO;
         isPlacing = true;
+        this.sceneName = sceneName;
+        Debug.Log(sceneName);
         SceneView.duringSceneGui += OnSceneGUI;
     }
 
@@ -176,7 +179,8 @@ public class PrefabModeMultiplePlacer : MonoBehaviour, IPrefabPlacerMode
                 prefab = newObject,
                 position = newObject.transform.position,
                 rotation = newObject.transform.rotation,
-                scale = newObject.transform.localScale
+                scale = newObject.transform.localScale,
+                SceneName = sceneName
             });
             PrefabPlacerWindow.CallPrefabInstanceActionTaken(newObject.name, Operation.Add);
             EditorUtility.SetDirty(activeTrackerSO);

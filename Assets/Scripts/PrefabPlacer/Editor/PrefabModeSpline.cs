@@ -14,12 +14,14 @@ public class PrefabModeSpline : MonoBehaviour, IPrefabPlacerMode
     private List<Vector3> points = new List<Vector3>();
     private int selectedNodeIndex = -1;
     private bool isPlacing = false;
+    private string sceneName;
 
     private const float NODE_SIZE = 0.15f;
     private const float HANDLE_SIZE = 0.1f;
-    public void OnModeActivated(ProfilePlacedObjectsTrackerSO trackerSO)
+    public void OnModeActivated(ProfilePlacedObjectsTrackerSO trackerSO, string sceneName)
     {
         isPlacing = true;
+        this.sceneName = sceneName;
         SceneView.duringSceneGui += OnSceneGUI;
     }
 

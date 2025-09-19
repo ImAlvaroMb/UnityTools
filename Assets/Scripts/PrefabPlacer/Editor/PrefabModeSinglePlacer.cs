@@ -8,13 +8,16 @@ public class PrefabModeSinglePlacer : MonoBehaviour, IPrefabPlacerMode //handles
     private GameObject previewInstance;
     private GameObject targetPrefab;
     private bool isPlacing;
+    private string sceneName;
     private ProfilePlacedObjectsTrackerSO activeTrackerSO;
     public Vector2 scaleValues = Vector2.one;
 
-    public void OnModeActivated(ProfilePlacedObjectsTrackerSO trackerSO)
+    public void OnModeActivated(ProfilePlacedObjectsTrackerSO trackerSO, string sceneName)
     {
         activeTrackerSO = trackerSO;
         isPlacing = true;
+        this.sceneName = sceneName;
+        Debug.Log(sceneName);
     }
 
     public void OnModeDeactivated()
@@ -121,7 +124,8 @@ public class PrefabModeSinglePlacer : MonoBehaviour, IPrefabPlacerMode //handles
                 prefab = instance,
                 position = instance.transform.position,
                 rotation = instance.transform.rotation,
-                scale = instance.transform.localScale
+                scale = instance.transform.localScale,
+                SceneName = sceneName,
             });
 
             PrefabPlacerWindow.CallPrefabInstanceActionTaken(instance.name, Operation.Add);
