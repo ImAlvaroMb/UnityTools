@@ -67,7 +67,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
     //static events
     public static event Action OnToolModeActionEvent;
-    public static event Action<string, Operation> OnPrefabInstanceActionTaken;
+    public static event Action<string, Operation, string> OnPrefabInstanceActionTaken;
 
     private string statusMessage = "Status message...";
 
@@ -153,9 +153,9 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         Debug.Log("Message Recieved");
     }
 
-    public static void CallPrefabInstanceActionTaken(string prefabName, Operation actionType)
+    public static void CallPrefabInstanceActionTaken(string prefabName, Operation actionType, string uniqueID)
     {
-        OnPrefabInstanceActionTaken?.Invoke(prefabName, actionType);
+        OnPrefabInstanceActionTaken?.Invoke(prefabName, actionType, uniqueID);
     }
 
     private void CheckIfStillInSameScene()
@@ -202,7 +202,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         
     }
 
-    private void UpdateSinglePrefabIntanceCount(string prefabName, Operation type)
+    private void UpdateSinglePrefabIntanceCount(string prefabName, Operation type, string uniqueID)
     {
         if(prefabInstanceCounts.ContainsKey(prefabName))
         {
@@ -218,13 +218,23 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
             prefabInstanceCounts.Add(prefabName, 1);
         }
 
-
-
             Repaint();
 
         foreach (string name in prefabInstanceCounts.Keys)
         {
             Debug.Log($"{name} there is {prefabInstanceCounts[name]} instances");
+        }
+    }
+
+    private void UpdateCurrentlyActivePrefabList(string uniqueID, Operation type)
+    {
+        PrefabPlacerObjectMarker foundMarker = currentlyActiveScenePrefabList.FirstOrDefault(marker => marker.uniqueID == uniqueID);
+        if(foundMarker != null) // check just in case, case shouldnt be possible
+        {
+            if(type == Operation.Add)
+            {
+                currentlyActiveScenePrefabList.Remove(foundMarker);
+            }
         }
     }
 

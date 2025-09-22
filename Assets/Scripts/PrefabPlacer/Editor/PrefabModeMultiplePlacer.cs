@@ -182,7 +182,7 @@ public class PrefabModeMultiplePlacer : MonoBehaviour, IPrefabPlacerMode
                 scale = newObject.transform.localScale,
                 SceneName = sceneName
             });
-            PrefabPlacerWindow.CallPrefabInstanceActionTaken(newObject.name, Operation.Add);
+            PrefabPlacerWindow.CallPrefabInstanceActionTaken(newObject.name, Operation.Add, marker.uniqueID);
             EditorUtility.SetDirty(activeTrackerSO);
         }
 
