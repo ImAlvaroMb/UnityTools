@@ -48,6 +48,10 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
     private bool canSelectMultiplePrefabIndex = false;
     private List<int> selectedPrefabIndexList = new List<int>();
     private Dictionary<string, int> prefabInstanceCounts = new Dictionary<string, int>();
+    private List<PrefabPlacerObjectMarker> currentlyActiveScenePrefabList = new List<PrefabPlacerObjectMarker>();
+    private bool hasAlreadyInitializedLists = false;
+    private bool stillInSameScene = false;
+    private string currentScene = "";
 
     private const float PREFAB_BUTTON_WIDTH = 110f;
     private const float PREFAB_BUTTON_HEIGHT = 100f;
@@ -82,6 +86,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         LoadSelectedProfile();
         ValidateProfileSelection();
         CheckAllPrefabInstanceCounts();
+        CheckIfStillInSameScene();
     }
 
     private void OnDisable()
@@ -153,28 +158,48 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         OnPrefabInstanceActionTaken?.Invoke(prefabName, actionType);
     }
 
+    private void CheckIfStillInSameScene()
+    {
+        if(currentScene != SceneManager.GetActiveScene().name)
+        {
+            stillInSameScene = false;
+            hasAlreadyInitializedLists = false;
+        } else
+        {
+            stillInSameScene = true;
+        }
+    }
+
     private void CheckAllPrefabInstanceCounts() // count all the already placed instances by the tool in the current scene
     {
-        prefabInstanceCounts.Clear();
-
-        PrefabPlacerObjectMarker[] markers = FindObjectsByType<PrefabPlacerObjectMarker>(FindObjectsSortMode.None);
-
-        foreach (var marker in markers)
+        if(!hasAlreadyInitializedLists)
         {
-            string prefabName = marker.gameObject.name;
-            if(prefabInstanceCounts.ContainsKey(prefabName))
+            prefabInstanceCounts.Clear();
+            currentlyActiveScenePrefabList.Clear();
+
+            PrefabPlacerObjectMarker[] markers = FindObjectsByType<PrefabPlacerObjectMarker>(FindObjectsSortMode.None);
+
+            foreach (var marker in markers)
             {
-                prefabInstanceCounts[prefabName]++;
-            } else
-            {
-                prefabInstanceCounts[prefabName] = 1;
+                currentlyActiveScenePrefabList.Add(marker);
+                string prefabName = marker.gameObject.name;
+                if (prefabInstanceCounts.ContainsKey(prefabName))
+                {
+                    prefabInstanceCounts[prefabName]++;
+                }
+                else
+                {
+                    prefabInstanceCounts[prefabName] = 1;
+                }
             }
-        }
 
-        foreach (string name in prefabInstanceCounts.Keys)
-        {
-            Debug.Log($"{name} there is {prefabInstanceCounts[name]} instances");
+            foreach (string name in prefabInstanceCounts.Keys)
+            {
+                Debug.Log($"{name} there is {prefabInstanceCounts[name]} instances");
+            }
+            hasAlreadyInitializedLists = true;
         }
+        
     }
 
     private void UpdateSinglePrefabIntanceCount(string prefabName, Operation type)
@@ -188,9 +213,14 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
             {
                 prefabInstanceCounts[prefabName]--;
             }
+        } else
+        {
+            prefabInstanceCounts.Add(prefabName, 1);
         }
 
-        Repaint();
+
+
+            Repaint();
 
         foreach (string name in prefabInstanceCounts.Keys)
         {

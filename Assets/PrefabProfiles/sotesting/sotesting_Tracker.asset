@@ -37,3 +37,15 @@ MonoBehaviour:
     rotation: {x: 0, y: -0, z: -0, w: 1}
     scale: {x: 1, y: 1, z: 1}
     SceneName: 
+  - UniqueID: 95305da2-a520-4234-bbfb-dd4316fb8c93
+    prefab: {fileID: 0}
+    position: {x: -7.945378, y: -1.4510916e-16, z: 6.5351353}
+    rotation: {x: 0, y: 0, z: 0, w: 1}
+    scale: {x: 1, y: 1, z: 1}
+    SceneName: TestLaptop
+  - UniqueID: 130e10f7-b7ca-4ae1-a06a-9de2dc0186b4
+    prefab: {fileID: 0}
+    position: {x: -8.357319, y: -3.0355954e-16, z: 13.671106}
+    rotation: {x: 0, y: 0, z: 0, w: 1}
+    scale: {x: 1, y: 1, z: 1}
+    SceneName: TestLaptop
