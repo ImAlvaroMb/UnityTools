@@ -67,7 +67,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
     //static events
     public static event Action OnToolModeActionEvent;
-    public static event Action<string, Operation, string> OnPrefabInstanceActionTaken;
+    public static event Action<string, Operation, PrefabPlacerObjectMarker> OnPrefabInstanceActionTaken;
 
     private string statusMessage = "Status message...";
 
@@ -153,9 +153,9 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         Debug.Log("Message Recieved");
     }
 
-    public static void CallPrefabInstanceActionTaken(string prefabName, Operation actionType, string uniqueID)
+    public static void CallPrefabInstanceActionTaken(string prefabName, Operation actionType, PrefabPlacerObjectMarker marker)
     {
-        OnPrefabInstanceActionTaken?.Invoke(prefabName, actionType, uniqueID);
+        OnPrefabInstanceActionTaken?.Invoke(prefabName, actionType, marker);
     }
 
     private void CheckIfStillInSameScene()
@@ -202,7 +202,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
         
     }
 
-    private void UpdateSinglePrefabIntanceCount(string prefabName, Operation type, string uniqueID)
+    private void UpdateSinglePrefabIntanceCount(string prefabName, Operation type, PrefabPlacerObjectMarker marker) // uniqueID needs to be updated to prefabplacerobjectmarker 
     {
         if(prefabInstanceCounts.ContainsKey(prefabName))
         {
@@ -218,24 +218,40 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
             prefabInstanceCounts.Add(prefabName, 1);
         }
 
-            Repaint();
+        Repaint();
+
+        UpdateCurrentlyActivePrefabList(marker,type);
 
         foreach (string name in prefabInstanceCounts.Keys)
         {
             Debug.Log($"{name} there is {prefabInstanceCounts[name]} instances");
         }
+
+        
     }
 
-    private void UpdateCurrentlyActivePrefabList(string uniqueID, Operation type)
+    private void UpdateCurrentlyActivePrefabList(PrefabPlacerObjectMarker objmarker, Operation type)
     {
-        PrefabPlacerObjectMarker foundMarker = currentlyActiveScenePrefabList.FirstOrDefault(marker => marker.uniqueID == uniqueID);
-        if(foundMarker != null) // check just in case, case shouldnt be possible
+        PrefabPlacerObjectMarker foundMarker = currentlyActiveScenePrefabList.FirstOrDefault(marker => marker.uniqueID == objmarker.uniqueID);
+
+        switch (type)
         {
-            if(type == Operation.Add)
-            {
-                currentlyActiveScenePrefabList.Remove(foundMarker);
-            }
+            case Operation.Add:
+                if(!currentlyActiveScenePrefabList.Contains(objmarker))
+                {
+                    currentlyActiveScenePrefabList.Add(objmarker);
+                }
+                break;
+
+            case Operation.Substract:
+                if(currentlyActiveScenePrefabList.Contains(objmarker))
+                {
+                    currentlyActiveScenePrefabList.Remove(objmarker);
+                }
+                break;
         }
+
+        Debug.Log(currentlyActiveScenePrefabList.Count());
     }
 
     private void RefreshProfiles()

@@ -128,7 +128,7 @@ public class PrefabModeSinglePlacer : MonoBehaviour, IPrefabPlacerMode //handles
                 SceneName = sceneName,
             });
 
-            PrefabPlacerWindow.CallPrefabInstanceActionTaken(instance.name, Operation.Add, marker.uniqueID);
+            PrefabPlacerWindow.CallPrefabInstanceActionTaken(instance.name, Operation.Add, marker);
             EditorUtility.SetDirty(activeTrackerSO);
         }
         OnActionDone();
