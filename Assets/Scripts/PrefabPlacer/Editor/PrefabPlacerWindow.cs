@@ -14,6 +14,8 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
     // WHEN OPENING THE TOOL I NEED TO FILL A CHACHE DICTIONARY WITH ALL THE OBJECTS (WITH MARKERS) ON THE SCENE, WHILE ON THE SAME SCENE I NEED TO UPDATE THAT DCTIONARY PROPERLY
     // WHEN CHANGING SCENES I NEED TO EMPTY THAT DICTIONARY AND REFILL IT
 
+    public static PrefabPlacerWindow Instance { get; private set; }
+
     // GENERAL VARIABLES
     private string[] profileNames;
     private int selectedProfileIndex = 0;
@@ -48,7 +50,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
     private bool canSelectMultiplePrefabIndex = false;
     private List<int> selectedPrefabIndexList = new List<int>();
     private Dictionary<string, int> prefabInstanceCounts = new Dictionary<string, int>();
-    private List<PrefabPlacerObjectMarker> currentlyActiveScenePrefabList = new List<PrefabPlacerObjectMarker>();
+    public List<PrefabPlacerObjectMarker> currentlyActiveScenePrefabList = new List<PrefabPlacerObjectMarker>();
     private bool hasAlreadyInitializedLists = false;
     private bool stillInSameScene = false;
     private string currentScene = "";
@@ -77,6 +79,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 #region Initial functions
     private void OnEnable()
     {
+        Instance = this;
         minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
         EditorApplication.projectChanged += RefreshProfiles;
         OnPrefabInstanceActionTaken += UpdateSinglePrefabIntanceCount;
@@ -91,6 +94,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
     private void OnDisable()
     {
+        if(Instance == this) Instance = null;
         EditorApplication.projectChanged -= RefreshProfiles;
         OnPrefabInstanceActionTaken -= UpdateSinglePrefabIntanceCount;
         SaveSelectedProfile();
@@ -150,13 +154,17 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
     public static void CallToolModeActionDone()
     {
         OnToolModeActionEvent?.Invoke();
-        Debug.Log("Message Recieved");
     }
 
     public static void CallPrefabInstanceActionTaken(string prefabName, Operation actionType, PrefabPlacerObjectMarker marker)
     {
         OnPrefabInstanceActionTaken?.Invoke(prefabName, actionType, marker);
     }
+
+    /*public static List<PrefabPlacerObjectMarker> getCurrentlyActivePrefabList()
+    {
+        return PrefabPlacerWindow.currentlyActiveScenePrefabList;
+    }*/
 
     private void CheckIfStillInSameScene()
     {
@@ -193,10 +201,6 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
                 }
             }
 
-            foreach (string name in prefabInstanceCounts.Keys)
-            {
-                Debug.Log($"{name} there is {prefabInstanceCounts[name]} instances");
-            }
             hasAlreadyInitializedLists = true;
         }
         
@@ -222,11 +226,7 @@ public class PrefabPlacerWindow : EditorWindow //handles UI and user inputs (on 
 
         UpdateCurrentlyActivePrefabList(marker,type);
 
-        foreach (string name in prefabInstanceCounts.Keys)
-        {
-            Debug.Log($"{name} there is {prefabInstanceCounts[name]} instances");
-        }
-
+       
         
     }
 
